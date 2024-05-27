@@ -1,0 +1,204 @@
+<div *ngIf="addressModalType" class="close-icon-wrapper" style="top:0px;right:10px;">
+    <a (click)="closePostModal();" href="javascript:void(0)" class="text-dark"><i class="fal fa-times"></i></a>
+</div>
+<div class="profile-info-section fadeIn">
+    <div class="d-flex align-items-center justify-content-between">
+        <p class="profile-section-heading">Addresses</p>
+        <a *ngIf="!createAddressDiv" class="nav-link btn-primary text-white rounded px-4 pointer" (click)="createAddressDiv = true;">Add an address</a>
+    </div>
+    <div class="profile-information mt-4">
+        <!-- CREATE ADDRESS -->
+        <div class="single-address fadeIn mb-3" *ngIf="createAddressDiv">
+            <div class="address">
+                <!-- <div class="row" style="padding: 30px 0px 0px;">
+                    <p class="mb-0 mr-2 mw-80">Add New Address: </p>
+                </div> -->
+                <p>Add New Address</p>
+                <hr />
+                <div class="row" style="padding: 30px 0px 0px;">
+                    
+                    <div class="col-md-6 d-flex align-items-center mb-3">
+                        <p class="mb-0 mr-2 mw-80">Name: </p>
+                        <div class="login-two-inputs" style="flex: 1;">
+                            <input [(ngModel)]="fullName" type="text" placeholder="Enter Name" class=" ml-0 w-100" />
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mb-3">
+                        <p class="mb-0 mr-2 mw-80">Contact: </p>
+                        <div class="login-two-inputs" style="flex: 1;">
+                            <input [(ngModel)]="phoneNumber1" type="text" placeholder="Contact Number" class=" ml-0 w-100" />
+                        </div> 
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mb-3">
+                        <p class="mb-0 mr-2 mw-80">Address: </p>
+                        <div class="login-two-inputs" style="flex: 1;">
+                            <input [(ngModel)]="address1" type="text" placeholder="Line 1" class=" ml-0 w-100" />
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mb-3">
+                        <p class="mb-0 mr-2 mw-80">Address : </p>
+                        <div class="login-two-inputs" style="flex: 1;">
+                            <input [(ngModel)]="address2" type="text" placeholder="Line 2" class=" ml-0 w-100"value="Sector - 5,"/>
+                        </div> 
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mb-3">
+                        <p class="mb-0 mr-2 mw-80">City : </p>
+                        <div class="login-two-inputs" style="flex: 1;">
+                            <input [(ngModel)]="city" type="text" placeholder="City" class=" ml-0 w-100" value="Bandhan Bank Head Office. Bus Stop : College More"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mb-3">
+                        <p class="mb-0 mr-2 mw-80">State : </p>
+                        <div class="login-two-inputs" style="flex: 1;">
+                            <input [(ngModel)]="state" type="text" placeholder="State" class=" ml-0 w-100" value="700091"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mb-3">
+                        <p class="mb-0 mr-2 mw-80">Pincode : </p>
+                        <div class="login-two-inputs" style="flex: 1;">
+                            <input [(ngModel)]="zipcode" type="text" placeholder="Pincode" class=" ml-0 w-100" value="West Bengal"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center">
+                        <p class="mb-0 mr-2 mw-80">Type : </p>
+                        <div class="login-two-inputs" style="flex: 1;">
+                            <select [(ngModel)]="isHomeAddress" class="form-control">
+                                <option value="true">Home</option>
+                                <option value="false">Office</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-right mt-4">
+                        <a class="btn btn-dark savebtn" (click)="this.createAddressDiv = false;">Cancel</a>
+                        <a (click)="addNewAddress()" class="btn btn-success savebtn ml-3">Save</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADDRESS LIST -->
+        <ng-container *ngIf="auth.user.shipping_adresses && auth.user.shipping_adresses.length">
+            <ng-container *ngFor="let address of auth.user.shipping_adresses.reverse(); let addressIndex = index">
+                <div  class="col-md-12 single-address mb-3" [ngClass]="{'sa-hover':addressModalType}">
+
+                    <div class="address w-100">
+                        <div class="sg-address">
+                            <div>
+                                
+                                <p>{{address.full_name}}
+                                    <span class="address-type">{{address.is_home_address ? 'Home' : 'Office'}}</span> 
+                                    <span class="contact-number">{{address.phone_number_1}}</span>
+                                </p>
+                                <p class="main-address">{{address.address1}}</p>
+                                <p *ngIf="address.address2" class="main-address">{{address.address2}}</p>
+                                <p class="main-address">{{address.city}}, {{address.state}}</p>
+                                <p class="main-address">Pincode: {{address.zipcode}}</p>
+                            </div>
+                            <ng-container *ngIf="!address.editAddressDiv">
+                              <ng-container *ngIf="addressModalType=='Shipping'">
+                                <a (click)="selectShippingAddress(address)" class="btn d-btn text-white"><i class="far fa-check-circle mr-1"></i> Deliver Here</a>
+                              </ng-container>
+                              <ng-container *ngIf="addressModalType=='Billing'">
+                                <a (click)="selectBillingAddress(address)" class="btn d-btn text-white"><i class="far fa-check-circle mr-1"></i> Select for Billing</a>
+                            </ng-container>
+                          </ng-container>
+                        </div>
+                    
+
+                        <!-- EDIT ADDRESS -->
+                        <ng-container *ngIf="address.editAddressDiv">
+                            <hr>
+                            <div class="address fadeIn">
+                                <div class="row" style="padding: 0px 0px 0px;">
+                                    <div class="col-md-6 d-flex align-items-center mb-3">
+                                        <p class="mb-0 mr-2 mw-80">Name: </p>
+                                        <div class="login-two-inputs" style="flex: 1;">
+                                            <input [(ngModel)]="address.full_name" type="text" placeholder="Enter Name" class=" ml-0 w-100" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-center mb-3">
+                                        <p class="mb-0 mr-2 mw-80">Contact: </p>
+                                        <div class="login-two-inputs" style="flex: 1;">
+                                            <input [(ngModel)]="address.phone_number_1" type="text" placeholder="Contact Number" class=" ml-0 w-100" />
+                                        </div> 
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-center mb-3">
+                                        <p class="mb-0 mr-2 mw-80">Address: </p>
+                                        <div class="login-two-inputs" style="flex: 1;">
+                                            <input [(ngModel)]="address.address1" type="text" placeholder="Line 1" class=" ml-0 w-100" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-center mb-3">
+                                        <p class="mb-0 mr-2 mw-80">Address : </p>
+                                        <div class="login-two-inputs" style="flex: 1;">
+                                            <input [(ngModel)]="address.address2" type="text" placeholder="Line 2" class=" ml-0 w-100"value="Sector - 5,"/>
+                                        </div> 
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-center mb-3">
+                                        <p class="mb-0 mr-2 mw-80">City : </p>
+                                        <div class="login-two-inputs" style="flex: 1;">
+                                            <input [(ngModel)]="address.city" type="text" placeholder="City" class=" ml-0 w-100" value="Bandhan Bank Head Office. Bus Stop : College More"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-center mb-3">
+                                        <p class="mb-0 mr-2 mw-80">State : </p>
+                                        <div class="login-two-inputs" style="flex: 1;">
+                                            <input [(ngModel)]="address.state" type="text" placeholder="State" class=" ml-0 w-100" value="700091"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-center mb-3">
+                                        <p class="mb-0 mr-2 mw-80">Pincode : </p>
+                                        <div class="login-two-inputs" style="flex: 1;">
+                                            <input [(ngModel)]="address.zipcode" type="text" placeholder="Pincode" class=" ml-0 w-100" value="West Bengal"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-center">
+                                        <p class="mb-0 mr-2 mw-80">Type : </p>
+                                        <div class="login-two-inputs" style="flex: 1;">
+                                            <select [(ngModel)]="address.is_home_address" class="form-control">
+                                                <option value="true">Home</option>
+                                                <option value="false">Office</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 text-right mt-4">
+                                        <a class="btn btn-dark savebtn" (click)="address.editAddressDiv=false;">Cancel</a>
+                                        <a class="btn btn-success savebtn ml-3" (click)="updateAddress(address)">Save</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+
+                    </div>
+                    <div class="svw">
+                        <ng-container *ngIf="!address.editAddressDiv">
+                            <span class="default-address" *ngIf="address.is_default"><i class="fad fa-check-circle"></i> {{address.is_default ? 'Shipping Address' : ''}}</span>
+                            <a *ngIf="!address.is_default" class="pointer sad hover-effect" (click)="setDefaultAddress(address._id)">Set as Shipping</a>
+                            <span class="billing-address" *ngIf="address.is_billing_address"><i class="fad fa-file-invoice"></i>{{address.is_billing_address ? 'Billing Address' : ''}}</span>
+                            <a *ngIf="!address.is_billing_address" class="pointer sab hover-effect" (click)="setBillingAddress(address._id)">Set as Billing</a>
+                        </ng-container>
+
+
+                        <div class="dropdown" *ngIf="!address.editAddressDiv">
+                            <i class="far fa-ellipsis-v" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </i>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item pointer" (click)="address.editAddressDiv=true;">Edit</a>
+                                <a class="dropdown-item pointer" (click)="removeAddress(address._id)">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+
+      <!-- NO ADDRESS MESSAGE -->
+      <ng-container *ngIf="!(auth.user.shipping_adresses && auth.user.shipping_adresses.length)">
+        <div class="mt-4">
+            <p class="profile-option-desc">You have not added any addresses yet</p>
+        </div>
+      </ng-container>
+  </div>
+  
+</div>

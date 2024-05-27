@@ -1,0 +1,64 @@
+<div class="close-icon-wrapper" style="top:0px;right:10px;">
+    <a (click)="closePostModal();" href="javascript:void(0)" class="text-dark"><i class="fal fa-times"></i></a>
+</div>
+<div class="fadeIn" style="padding: 50px 40px 30px;">
+    <div class="d-flex align-items-center justify-content-center">
+        <div>
+            <img alt="product" height="100" width="100" [src]="orderItem.product.info.images[0].thumb">
+        </div>
+        <div class="product-name ml-4">
+            <div class="product-name-section">
+                <a href="">{{orderItem.product.info.name}}</a>
+            </div>
+            <p *ngFor="let variation of orderItem.product_variation" class="ng-star-inserted">{{variation.group}} : {{variation.property}}</p>
+        </div>
+    </div>  
+
+    <div class="star-container" *ngIf="!orderItem.comments.length">
+        <div (click)="setRating(1)">
+            <i [ngClass]="rating >= 1 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+        </div>
+        <div (click)="setRating(2)">
+            <i [ngClass]="rating >= 2 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+        </div>
+        <div (click)="setRating(3)">
+            <i [ngClass]="rating >= 3 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+        </div>
+        <div (click)="setRating(4)">
+            <i [ngClass]="rating >= 4 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+        </div>
+        <div (click)="setRating(5)">
+            <i [ngClass]="rating >= 5 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+        </div>
+    </div>
+    <div class="star-container no-pointer" *ngIf="orderItem.comments.length">
+        <div>
+            <i [ngClass]="orderItem.comments[0].rate >= 1 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+        </div>
+        <div>
+            <i [ngClass]="orderItem.comments[0].rate >= 2 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+        </div>
+        <div>
+            <i [ngClass]="orderItem.comments[0].rate >= 3 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+        </div>
+        <div>
+            <i [ngClass]="orderItem.comments[0].rate >= 4 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+        </div>
+        <div>
+            <i [ngClass]="orderItem.comments[0].rate >= 5 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+        </div>
+    </div>
+
+    <div *ngIf="!orderItem.comments.length">
+        <textarea class="form-control review-input" [(ngModel)]="review" placeholder="Write your review here. Minimum 20 characters required"></textarea>
+        <div class="d-flex align-items-center justify-content-center">
+            <a (click)="closePostModal();" class="btn btn-dark savebtn">Cancel</a>
+            <button [disabled]="!(review.length > 10)" (click)="postReview()" class="btn btn-success savebtn ml-3" >Submit</button>
+        </div>
+    </div>
+    <div *ngIf="orderItem.comments.length">
+        <p class="text-center">
+            {{orderItem.comments[0].comment}}
+        </p>
+    </div>
+</div>

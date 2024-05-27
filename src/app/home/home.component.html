@@ -1,0 +1,426 @@
+<ngx-loading-bar color="#ff8b8b" includeSpinner="false" height="3px"></ngx-loading-bar>
+<section class="slider-section">
+  <div id="carousel" class="carousel slide" data-ride="carousel" *ngIf="banners && banners.length">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <ng-container *ngFor="let banner of banners; let bannerIndex = index">
+        <li data-target="#carousel" [data-slide-to]="index" [ngClass]="{'active' : bannerIndex == 0}"></li>
+      </ng-container>
+    </ol>
+
+    <!-- Carousel Content -->
+    <div class="carousel-inner">
+      <ng-container *ngFor="let banner of banners; let bannerIndex = index">
+        <div class="carousel-item" [ngClass]="{'active' : bannerIndex == 0}" >
+          <a *ngIf="banner.link_entity == 'category' && banner.link_category && banner.link_category.length" [routerLink]="'/category/'+banner.link_category[0].slug+'/'+banner.link_category[0]._id">
+            <img class="d-block w-100" [src]="banner['en'].images[0].regular" [alt]="banner.name">
+          </a>
+          <a *ngIf="banner.link_entity == 'product' && banner.link_product && banner.link_product.length" [routerLink]="'/product/'+banner.link_product[0].slug+'/'+banner.link_product[0]._id">
+            <img class="d-block w-100" [src]="banner['en'].images[0].regular" [alt]="banner.name">
+          </a>
+          <a *ngIf="banner.link_entity == 'url' && banner.link_url && banner.link_url.length" [href]="banner.link_url" target="_black">
+            <img class="d-block w-100" [src]="banner['en'].images[0].regular" [alt]="banner.name">
+          </a>
+        </div>
+      </ng-container>
+    </div>
+    <!-- End of Carousel Content -->
+
+    <!-- Previous & Next -->
+    <a href="#carousel" class="carousel-control-prev" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only"></span>
+    </a>
+    <a href="#carousel" class="carousel-control-next" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only"></span>
+    </a>
+  </div> <!-- End of Carousel -->
+</section>
+
+<section class="four-column">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+        <div class="col-md-6 col-xl-3 cl-lg-3">
+            <div class="single-column">
+                <i class="fas fa-truck"></i>
+                <div>
+                    <p class="first">Free Shipping</p>
+                    <p class="second">orders above ₹{{globals.settings.freeShippingAbove}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 cl-lg-3">
+            <div class="single-column">
+                <i class="far fa-life-ring"></i>
+                <div>
+                    <p class="first">24x7 Helpline</p>
+                    <p class="second">online service</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 cl-lg-3">
+            <div class="single-column">
+                <i class="far fa-smile"></i>
+                <div>
+                    <p class="first">Premium Quality</p>
+                    <p class="second">100% Satisfaction</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 cl-lg-3">
+            <div class="single-column">
+                <i class="fas fa-id-card"></i>
+                <div>
+                    <p class="first">Online Payment</p>
+                    <p class="second">Debit or Credit Cards</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="product-section" *ngIf="products && products.length">
+    <div class="container-fluid">
+        <h2>{{products[0].category[0].name}}</h2>
+        <div class="product-container row mb-2">
+            <div class="col" *ngFor="let product of products | slice:0:5; let i = index">
+                <div class="product-one">
+                    <div class="product-top">
+                        <div class="product-options-cw" (click)="addToWishlist(product._id, i)">
+                            <a *ngIf="product.addedToWishlist"><i class="fas fa-heart"></i></a>
+                            <a *ngIf="!product.addedToWishlist"><i class="far fa-heart"></i></a>
+                        </div>
+                        <img style="cursor: pointer;" (click)="goToProductDetailsPage(product._id, product.slug)" [src]="product.images[0].regular" class="product-image">
+                        <div class="quick-view" (click)="goToProductDetailsPage(product._id, product.slug)">
+                            <p>View</p>
+                        </div>
+                    </div>
+                    <div class="product-bottom">
+                        <p class="product-name">{{product.name}}</p>
+                        <p class="product-price-cont mb-1" *ngIf="product.final_base_price < product.base_price">
+                            <span class="current-price">₹{{product.final_base_price}} </span>
+                            <span class="old-price">₹{{product.base_price}}</span> 
+                            <span class="discount">{{product.final_disount_percent}}% off</span>
+                        </p>
+        
+                        <p class="product-price-cont mb-1" *ngIf="product.final_base_price == product.base_price">
+                            <span class="current-price">₹{{product.base_price}}</span>
+                        </p>
+                        <p class="rating-area-product">
+                            <ng-container *ngIf="product.total_comments > 0">
+                                <i [ngClass]="product.avg_rating >= 1 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+                                <i [ngClass]="product.avg_rating >= 2 ? 'fas fadeIn' : 'far'" class="fa-star"></i>                                    
+                                <i [ngClass]="product.avg_rating >= 3 ? 'fas fadeIn' : 'far'" class="fa-star"></i>                                    
+                                <i [ngClass]="product.avg_rating >= 4 ? 'fas fadeIn' : 'far'" class="fa-star"></i>                                    
+                                <i [ngClass]="product.avg_rating >= 5 ? 'fas fadeIn' : 'far'" class="fa-star"></i>                                        
+                                <span class="rating-count">({{product.total_comments}})</span>
+                            </ng-container> &nbsp;
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="discount-area mb-3">
+            <p class="sub-heading">Enjoy discount upto 50% on our site</p>
+            <p class="heading">OMG! Just look at the <span>Great Deals!</span></p>
+            <a class="title" href="" routerLink="/products/top-deals"><span>How Does It Feel, When You See Great Discount Deals on your favorite Products?</span></a>
+        </div>
+    </div>
+</section>
+
+<section class="category-container" *ngIf="highlightedCategories && highlightedCategories.length">
+    <div class="container-fluid">
+            <div class="row">
+                    <div class="col-md-6 col-lg-4 col-xl-4">
+                            <div *ngIf="highlightedCategories.length > 0" class="small-category-container bg-pink">
+                                <div>
+                                    <p class="title">{{highlightedCategories[0].name}}</p>
+                                    <a style="cursor: pointer;" href="" [routerLink]="'/category/'+highlightedCategories[0].slug+'/'+highlightedCategories[0]._id" class="button">View More</a>
+                                </div>
+                                <img [src]="highlightedCategories[0].images[0].regular" class="img-fluid" style="height: 150px;"/>
+                            </div>
+                            <div *ngIf="highlightedCategories.length > 1" class="small-category-container bg-light-blue">
+                                    <div>
+                                        <p class="title">{{highlightedCategories[1].name}}</p>
+                                        <a class="button" style="cursor: pointer;" href="" [routerLink]="'/category/'+highlightedCategories[1].slug+'/'+highlightedCategories[1]._id">View More</a>
+                                    </div>
+                                    <img [src]="highlightedCategories[1].images[0].regular" class="img-fluid" style="height: 150px;"/>
+                            </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-xl-4">
+                            <div *ngIf="highlightedCategories.length > 2" class="small-category-container-large bg-lightest-blue">
+                                    <div>
+                                        <p class="title">{{highlightedCategories[2].name}}</p>
+                                        <a class="button" style="cursor: pointer;" href="" [routerLink]="'/category/'+highlightedCategories[2].slug+'/'+highlightedCategories[2]._id">View More</a>
+                                    </div>
+                                    <img [src]="highlightedCategories[2].images[0].regular" class="img-fluid" style="height: 225px;"/>
+                            </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-xl-4">
+                        <div *ngIf="highlightedCategories.length > 3" class="small-category-container bg-green">
+                                <div>
+                                    <p class="title">{{highlightedCategories[3].name}}</p>
+                                    <a class="button" style="cursor: pointer;" href="" [routerLink]="'/category/'+highlightedCategories[3].slug+'/'+highlightedCategories[3]._id">View More</a>
+                                </div>
+                                <img [src]="highlightedCategories[3].images[0].regular" class="img-fluid" style="height: 150px;"/>
+                        </div>
+                        <div *ngIf="highlightedCategories.length > 4" class="small-category-container bg-skin">
+                                <div>
+                                    <p class="title">{{highlightedCategories[4].name}}</p>
+                                    <a class="button" style="cursor: pointer;" href="" [routerLink]="'/category/'+highlightedCategories[4].slug+'/'+highlightedCategories[4]._id">View More</a>
+                                </div>
+                                <img [src]="highlightedCategories[4].images[0].regular" class="img-fluid" style="height: 150px;"/>
+                        </div>
+                    </div>
+            </div>
+    </div>
+</section>
+
+
+<!-- <section class="product-section bg-light-red">
+    <div class="container-fluid">
+        <h2>Letterheads</h2>
+        <div class="product-container row mb-5">
+            <div class="col">
+                <div class="product-one">
+                    <div class="product-top">
+                        <img src="assets/img/card-demo.png" class="product-image"/>
+                    </div>
+                    <div class="product-bottom">
+                        <p class="product-name">Visiting Card 1</p>
+                        <p class="product-price-cont">
+                            <span class="current-price">₹299</span>
+                            <span class="old-price">₹399</span>
+                            <span class="discount">25% off</span>
+                        </p>
+                        <p class="rating-area-product">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span class="rating-count">(21)</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="product-one">
+                    <div class="product-top">
+                        <img src="assets/img/card-demo.png" class="product-image"/>
+                    </div>
+                    <div class="product-bottom">
+                        <p class="product-name">Visiting Card 1</p>
+                        <p class="product-price-cont">
+                            <span class="current-price">₹299</span>
+                            <span class="old-price">₹399</span>
+                            <span class="discount">25% off</span>
+                        </p>
+                        <p class="rating-area-product">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span class="rating-count">(21)</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="product-one">
+                    <div class="product-top">
+                        <img src="assets/img/card-demo.png" class="product-image"/>
+                    </div>
+                    <div class="product-bottom">
+                        <p class="product-name">Visiting Card 1</p>
+                        <p class="product-price-cont">
+                            <span class="current-price">₹299</span>
+                            <span class="old-price">₹399</span>
+                            <span class="discount">25% off</span>
+                        </p>
+                        <p class="rating-area-product">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span class="rating-count">(21)</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="product-one">
+                    <div class="product-top">
+                        <img src="assets/img/card-demo.png" class="product-image"/>
+                    </div>
+                    <div class="product-bottom">
+                        <p class="product-name">Visiting Card 1</p>
+                        <p class="product-price-cont">
+                            <span class="current-price">₹299</span>
+                            <span class="old-price">₹399</span>
+                            <span class="discount">25% off</span>
+                        </p>
+                        <p class="rating-area-product">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span class="rating-count">(21)</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="product-one">
+                    <div class="product-top">
+                        <img src="assets/img/card-demo.png" class="product-image"/>
+                    </div>
+                    <div class="product-bottom">
+                        <p class="product-name">Visiting Card 1</p>
+                        <p class="product-price-cont">
+                            <span class="current-price">₹299</span>
+                            <span class="old-price">₹399</span>
+                            <span class="discount">25% off</span>
+                        </p>
+                        <p class="rating-area-product">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span class="rating-count">(21)</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+
+<section class="extra-option">
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-6">
+              <p class="extra-title">Why Choose Us?</p>
+
+              <div class="accordion-area">
+                 
+                <p>Active Print empowers hundreds of business owners to market themselves professionally. Our wide range of quality products at affordable prices, along with design tools suited to every skill level and need, mean everyone can create the customised materials they need to get their message across.</p>
+                <p>Active Print has consolidated its leading position. We’ve greatly expanded our product and service offerings and advanced our technology. </p>
+                  <!-- <div class="accordions">
+                      <div class="accordion" id="accordionExample">
+                          <div class="single-accordion" >
+                              <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="false">
+                                  <span class="d-flex align-items-center">
+                                      <span class="plus-icon"><i class="fas fa-plus-square"></i></span>
+                                      <span class="minus-icon"><i class="fas fa-minus-square"></i></span>
+                                      We have 10 plus years in printing industry 
+                                  </span>
+                                  <span><i class="fas fa-chevron-down"></i></span>
+                              </a>
+                              <div id="collapseOne" class="collapse" data-parent="#accordionExample">
+                                  <div class="card-body">
+                              asasas
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="single-accordion" >
+                              <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false">
+                                  <span class="d-flex align-items-center">
+                                      <span class="plus-icon"><i class="fas fa-plus-square"></i></span>
+                                      <span class="minus-icon"><i class="fas fa-minus-square"></i></span>
+                                      We have 10 plus years in printing industry 
+                                  </span>
+                                  <span><i class="fas fa-chevron-down"></i></span>
+                              </a>
+                              <div id="collapseTwo" class="collapse" data-parent="#accordionExample">
+                                  <div class="card-body">
+                              asasas
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div> -->
+
+                   
+              </div>
+          </div>
+          <!-- <div class="col-md-2"></div> -->
+            <div class="col-md-6">
+                <div class="d-flex align-items-center justify-content-between">
+                    <p class="extra-title mb-0">Customer's Words</p>
+                    <div class="cr-btn-wrapper">
+                        <a (click)="testimonialCarousel.prev()" class="cr-btn" role="button" data-slide="prev">
+                            <i class="far fa-chevron-left"></i>
+                        </a>
+                        <a (click)="testimonialCarousel.next()" class="cr-btn" role="button" data-slide="next">
+                            <i class="far fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="testi-wrapper">
+
+                  <ngb-carousel #TestimonialCarousel [interval]="3000" [showNavigationArrows]="false" [showNavigationIndicators]="false">
+                    <ng-template ngbSlide *ngFor="let testimonial of testimonials; index as i" [id]="testimonial._id">
+                      <div class="single-testi" [@simpleFadeAnimation]="testimonialCarousel && testimonialCarousel.activeId==testimonial._id">
+                          <div class="og-testi">{{testimonial.review}}</div>
+                          <div class="testi-content">
+                              <img *ngIf="testimonial.images.length" [src]="testimonial.images[0].regular" class="user-image"/> 
+                              <img *ngIf="!testimonial.images.length" src="https://res.cloudinary.com/dmeb6epg8/image/upload/v1625113642/ActivePrint/unnamed.png" class="user-image"/> 
+                              <div class="w-100">
+                                  <div class="d-flex align-items-center justify-content-between w-100">
+                                      <p class="user-name">{{testimonial.client}}</p>
+                                      <div class="testi-rating">
+                                          <i class="fas fa-star"></i>
+                                          <i class="fas fa-star"></i>
+                                          <i class="fas fa-star"></i>
+                                          <i class="fas fa-star"></i>
+                                          <i class="fas fa-star"></i>
+                                      </div>
+                                  </div>
+                                  <p class="user-designation">{{testimonial.designation}}</p>
+                              </div>
+                          </div>
+                      </div>
+                    </ng-template>
+                  </ngb-carousel>
+
+                    <!-- <div id="carousel1" class="carousel slide carousel-fade" data-ride="carousel" data-interval="3000">
+                        <div class="carousel-inner" role="listbox" *ngIf="testimonials">
+                          <ng-container *ngFor="let testimonial of testimonials; let i = index">
+                            <div class="carousel-item" [ngClass]="i == 0 ? 'active' : ''" style="height: auto;" >
+                                <div class="single-testi" >
+                                    <div class="og-testi">{{testimonial.review}}</div>
+                                    <div class="testi-content">
+                                        <img *ngIf="testimonial.images.length" [src]="testimonial.images[0].regular" class="user-image"/> 
+                                        <img *ngIf="!testimonial.images.length" src="https://res.cloudinary.com/dmeb6epg8/image/upload/v1625113642/ActivePrint/unnamed.png" class="user-image"/> 
+                                        <div class="w-100">
+                                            <div class="d-flex align-items-center justify-content-between w-100">
+                                                <p class="user-name">{{testimonial.client}}</p>
+                                                <div class="testi-rating">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </div>
+                                            </div>
+                                            <p class="user-designation">{{testimonial.designation}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          </ng-container>
+                        </div> 
+                    </div>       -->
+                    
+                </div>
+            </div>
+      </div>
+  </div>
+</section>

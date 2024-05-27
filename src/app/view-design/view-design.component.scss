@@ -1,0 +1,163 @@
+section.main-designing-wrapper {
+    width: 88vw;
+    background-color: #ffffff;
+    height: 96vh;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-top: 2vh;
+}
+.designing-modal-body-wrapper {
+    height: calc(100% - 58px);
+}
+.modal-header {
+    height: 58px;
+}
+.browse-designs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+p.tab-heading-option {
+    margin: 0px 0px;
+    font-size: 18px;
+    padding: 15px 18px;
+    position: relative;
+    height: 100%;
+}
+.designing-modal-body-container {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    height: 100%;
+}
+.sd-left-area {
+    width: 25%;
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+.sd-content-section {
+    height: auto;
+    padding: 20px 15px 15px;
+    // overflow-y: auto;
+    flex: 1 1 auto;
+}
+.sd-input-wrapper {
+    position: relative;
+    margin-bottom: 18px;
+}
+.sd-input-wrapper p {
+    font-size: 14px;
+    padding: 0px 7px 0px 0px;
+    display: flex;
+    margin-bottom: 10px;
+}
+.sd-input-wrapper p span{
+    margin-left: 10px;
+}
+.sd-right-area {
+    width: 75%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid #e0e0e0;
+    background-color: #f1f1f1;
+    height: 100%;
+}
+.sd-right-area .sd-content-wrapper {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0px;
+}
+span.close-modal {
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    height: 35px;
+    width: 35px;
+    background-color: #ffe6e6;
+    border-radius: 50%;
+    color: #f43636;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    cursor: pointer;
+}
+.sd-right-area .sd-content-wrapper img {
+    height: 75%;
+    width: auto;
+}
+.template-name {
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 500;
+}
+.sd-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+}
+.sd-right-area .sd-content-wrapper img.sd-image-fb.active {
+    height: 65px !important;
+    width: 65px !important;
+    margin: 0px 8px;
+    border: 1px solid #810000;
+    border-radius: 4px;
+}
+.sd-right-area .sd-content-wrapper img.sd-image-fb {
+    height: 65px !important;
+    width: 65px !important;
+    margin: 0px 8px;
+    cursor: pointer;
+}
+.lg-wrapper {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+.lg-wrapper img {
+    height: 110px;
+    width: auto;
+}
+.file-container {
+    border: 1px solid #81000061;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    background-color: #ffffff;
+}
+.file-name {
+    margin: 0px;
+    padding: 10px 10px;
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+.download-btn {
+    background-color: #810000;
+    color: #ffffff;
+    border: 0px;
+    font-weight: 300;
+    font-size: 14px;
+    padding: 6px 10px;
+    border-radius: 5px;
+    margin: 18px 0px;
+}
+.download-btn:focus {
+    outline: none;
+}
+.download-btn i {
+    margin-right: .5rem!important;
+}

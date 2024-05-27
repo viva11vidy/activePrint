@@ -1,0 +1,205 @@
+<section class="main-product-wrapper">
+    
+    <section class="cart-wrapper pb-5" style="min-height: 700px;">
+        <div class="container-fluid px-4" *ngIf="order">
+            <div class="row py-4">
+                <div class="col-md-9">
+                    <div class="payment-success-wrapper">
+                        <i class="fal fa-check-circle"></i>
+                        <div class="ml-3">
+                            <p class="st">Thank You!</p>
+                            <p class="sbt">Your order has been placed</p>
+                        </div>
+                    </div>
+
+                    <div class="order-results"> 
+                      <div class="overview-item">
+                        <span>Order ID:</span>
+                        <strong>{{order.virtual_id ? order.virtual_id : order._id}}</strong>
+                      </div>
+                      <div class="overview-item">
+                        <span>Status:</span>
+                        <strong class="text-success">{{order.order_status}}</strong>
+                      </div>
+                      <div class="overview-item">
+                        <span>Date:</span>
+                        <strong>{{order.created | date:'dd.MM.yyyy'}}</strong>
+                      </div>
+                      <div class="overview-item">
+                        <span>Total:</span>
+                        <strong>₹ {{order.order_master.total_order_final_value | number : '1.2-2'}}</strong>
+                      </div>
+                      <div class="overview-item">
+                        <span>Payment method:</span>
+                        <strong>{{order.payment_mode == 'Cash' ? 'Cash on delivery' : 'Online'}}</strong>
+                      </div>
+                    </div>
+
+
+                    <div class="order-results step-header cancel-wrapper" *ngIf="order.order_status == 'Placed' && order.payment_mode == 'Online' && order.payment_status != 'Success'">
+                      <div class="status-options-wrapper mt-0 bt-0 pt-0">
+                          <div>
+                              <p class="tp-title">Your payment attempt was unsuccessfull</p>
+                          </div>
+                          <div class="d-flex align-items-center">
+                              <a class="btn btn-primary text-white" (click)="goToPaymentPage()">Retry Payment</a>
+                          </div>
+                      </div>
+                    </div>
+
+
+                    <div class="single-checkout-step-body spm  table-responsive">
+                        <table class="shop-table cart-table mt-0">
+                            <thead>
+                                <tr>
+                                    <th colspan="3">Item Summary</th>
+                                    <th colspan="2" class="text-right">Item Count : {{order.order_items.length}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let orderItem of order.order_items">
+                                    <td class="product-thumbnail" style="width: 130px;">
+                                        <figure>
+                                            <a href="">
+                                                <img [src]="orderItem.product.info.images[0].thumb" width="100" height="100" alt="product">
+                                            </a>
+                                            <a *ngIf="orderItem.design" (click)="globals.viewingDesign=orderItem.design" class="view-design" style="display: inline-flex;"><i class="fas fa-image"></i> View Design</a>
+                                        </figure>
+                                    </td>
+                                    <td class="product-name sm-width">
+                                        <div class="product-name-section">
+                                            <a style="cursor: pointer;" (click)="goToProductDetailsPage(orderItem.product._id, orderItem.product.info.slug)">{{orderItem.product.info.name}}</a>
+                                        </div>
+                                        <p *ngFor="let variation of orderItem.product_variation">{{variation.group}} : {{variation.property}}</p>
+                                        <!-- <p *ngIf="orderItem.design" (click)="globals.viewingDesign=orderItem.design">View Design</p> -->
+                                    </td>
+                                    <!-- <td class="product-subtotal">
+                                        <span class="amount">Price : ₹129.99</span>
+                                    </td> -->
+                                    <td class="product-quantity sm-width">
+                                        <span class="amount">Quantity : {{orderItem.qty}}</span>
+                                    </td>
+                                    <td class="product-price">
+                                        <span class="amount">Subtotal : ₹{{orderItem.final_price | number : '1.2-2'}}</span>
+                                    </td>
+                                </tr>
+
+
+                                <!-- <tr class="summary-subtotal">
+                                  <td colspan="2">
+                                    <h6 class="summary-subtitle">Subtotal:</h6>
+                                  </td>
+                                  <td colspan="3" class="summary-subtitle text-right">₹{{order.order_master.total_order_price | number : '1.2-2'}}</td>
+                                </tr> -->
+                                <!-- <tr class="summary-subtotal">
+                                  <td colspan="2">
+                                    <h6 class="summary-subtitle">Delivery:</h6>
+                                  </td>
+                                  <td colspan="3" class="summary-subtitle text-right text-success">Free</td>
+                                </tr> -->
+                                <!-- <tr class="summary-subtotal">
+                                  <td colspan="2">
+                                    <h6 class="summary-subtitle">Total:</h6>
+                                  </td>
+                                  <td colspan="3" class="summary-subtitle text-right">₹{{order.order_master.total_order_final_value | number : '1.2-2'}}</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                   
+                    <div class="cart-right-area mb-4">
+                        <div class="cl-header">
+                            <p>Order Summary</p>
+                        </div>
+                        
+                        <div class="cl-body">
+                            <table class="shop-table amount-table cart-table mt-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="product-subtotal border-0">
+                                            <span class="amount">Item Total</span>
+                                        </td>
+                                        <td class="product-price border-0 text-right">
+                                            <span class="amount">₹ {{order.order_master.total_order_price - order.order_master.total_order_disc | number : '1.2-2'}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="order.order_master.total_delivery_charge > 0">
+                                        <td class="product-subtotal border-0">
+                                            <span class="amount">Delivery Charges</span>
+                                        </td>
+                                        <td class="product-price border-0 text-right">
+                                            <span class="amount">₹ {{order.order_master.total_delivery_charge | number : '1.2-2'}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="order.order_master.total_delivery_charge > 0">
+                                        <td class="product-subtotal border-0">
+                                            <span class="amount">Custom Design Charges</span>
+                                        </td>
+                                        <td class="product-price border-0 text-right">
+                                            <span class="amount">₹ {{order.order_master.total_custom_design_charge | number : '1.2-2'}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="product-subtotal">
+                                            <span class="amount">Order Total</span>
+                                        </td>
+                                        <td class="product-price text-right">
+                                            <span class="amount">₹ {{order.order_master.total_order_final_value | number : '1.2-2'}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr *ngIf="order.order_master.total_order_disc > 0" style="margin: 5px 0px 20px;border-top: 1px solid #e1e1e1;">
+                            <p *ngIf="order.order_master.total_order_disc > 0" class="text-success text-center">Your Total Savings on this order ₹ {{order.order_master.total_order_disc | number : '1.2-2'}}</p>
+                        </div>
+                        
+                    </div>
+                  
+
+
+
+
+
+                </div>
+                <div class="col-md-3">
+                    <div class="cart-right-area mb-4">
+                        <div class="cl-header">
+                            <p>Delivery Address</p>
+                            <!-- <p class="item-count">Total Item 3</p> -->
+                        </div>
+                        <div class="cl-body py-4">
+                            <p class="dt">{{order.shipping_address.full_name}} <span class="address-type">{{order.shipping_address.is_home_address ? 'Home' : 'Office'}}</span></p>
+                            <p class="dt">{{order.shipping_address.phone_number_1}}</p>
+                            <p>{{order.shipping_address.address1}} <br />
+                              <span *ngIf="order.shipping_address.address2" class="main-address">{{order.shipping_address.address2}}</span> <br />
+                              {{order.shipping_address.city}}, {{order.shipping_address.state}} <br />
+                              Pincode: {{order.shipping_address.zipcode}} <br /></p>
+                            <hr style="margin: 5px 0px 20px;border-top: 1px solid #e1e1e1;">
+                            <p class="text-success mb-0">More Information has been sent to <strong>{{auth.user.email}}</strong>
+                        </div>
+                    </div>
+                    <div class="cart-right-area">
+                      <div class="cl-header">
+                          <p>Need Help ?</p>
+                          <!-- <p class="item-count">Total Item 3</p> -->
+                      </div>
+                      <div class="cl-body py-4">
+                        <p>Connect with us : <strong>{{globals.settings.customerSupportContactNumber}}</strong></p>
+                        <p>Call Us : <strong>{{globals.settings.customerSupportEmail}}</strong></p>
+                        <hr style="margin: 5px 0px 20px;border-top: 1px solid #e1e1e1;">
+                        <a class="btn btn-primary text-white" style="font-size: 15px;margin-bottom: 10px;" routerLink="/my-account/customer-care">
+                          <i class="fal fa-user-headset mr-3"></i>Customer care
+                        </a>
+                        <a class="btn btn-primary text-white" style="font-size: 15px;" routerLink="/my-account/support-chat">
+                          <i class="fal fa-user-headset mr-3"></i>Support Chat
+                        </a>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</section>

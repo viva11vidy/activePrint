@@ -1,0 +1,40 @@
+.testi-content p.user-designation{
+  color: #b12b1d;
+}
+.carousel-text {
+    position: absolute;
+    top: 48%;
+    transform: translateY(-50%);
+    left: 9%;
+}
+.carousel-text h3 {
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: 400;
+}
+.carousel-text span {
+    font-weight: 700;
+    padding-top: 5px;
+    display: inline-flex;
+}
+.carousel-text p {
+    color: #ffffff;
+    font-size: 20px;
+    margin-top: 26px;
+    margin-bottom: 25px;
+}
+a.slider-button {
+    background-color: #ffffff;
+    display: inline-block;
+    padding: 12px 35px;
+    border-radius: 7px;
+    color: #810000;
+    font-weight: 500;
+    transition: all ease 0.3s;
+}
+a.slider-button:hover {
+    opacity: 0.95;
+    cursor: pointer;
+    transition: all ease 0.3s;
+}
+

@@ -1,0 +1,23 @@
+<div class="main-page-section">
+  <div class="container-fluid" *ngIf="page">
+    <div class="col-md-12 mb-4">
+      <p style="margin-top: 60px;margin-bottom: 20px;font-size: 40px;line-height: 1.125;color: #810000;">{{page.title}}</p>
+      <div class="editor-text" [innerHtml]="page.content"></div>
+    </div>
+  </div>
+
+
+  <div class="container" *ngIf="loaded && !page">
+    <div class="row align-items-center mt-3">
+      <div class="col-md-4">
+          <p class="page-title">Page Not Found</p>
+          <p class="page-sub" style="margin-bottom: 30px;">We are sorry, the page you are looking for might have been removed or temporarily unavailable.</p>
+          <button class="product-button" [routerLink]="'/'+this.globals.country+'-'+this.globals.language+'/home'">Go Home</button>
+      </div>
+      <div class="col-md-8 text-right">
+          <img src="assets/img/404.jpg" height="290px"/>
+      </div>
+    </div>
+  </div>
+
+</div>

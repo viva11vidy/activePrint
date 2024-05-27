@@ -1,0 +1,96 @@
+<ngx-loading-bar color="#d9b2b2" includeSpinner="false" height="3px"></ngx-loading-bar>
+
+
+<section class="main-product-wrapper">
+
+    <div class="page-header container-fluid px-4" style="background-image: url('assets/img/visitng-card-banner.jpg'); background-color: #1f0006;">
+        <!-- Skeleton Loading Starts -->
+        <ng-container *ngIf="skeletonLoading">
+            <h1 class="skeleton-loading light" style="height: 45px;width: 300px;"></h1>
+            <p class="skeleton-loading light mb-0" style="width: 136px; height: 25px;"></p>
+        </ng-container>
+        <!-- Skeleton Loading Ends -->
+        <ng-container *ngIf="category && !skeletonLoading">
+            <h1 class="page-title fadeIn">{{category.name}}</h1>
+            <ul class="breadcrumb fadeIn">
+                <li><a routerLink="/home"><i class="fas fa-home"></i></a></li>
+                <li class="delimiter">/</li>
+                <li *ngIf="parentCategory"><a [routerLink]="'/category/'+parentCategory.slug+'/'+parentCategory._id">{{parentCategory.name}}</a></li>
+                <li *ngIf="parentCategory" class="delimiter">/</li>
+                <li>{{category.name}}</li>
+            </ul>
+        </ng-container>
+    </div>
+    <div class="container-fluid px-4">
+        <div class="row">
+            <div class="col-md-12 main-content">
+              <nav class="toolbox sticky-toolbox sticky-content fix-top">
+                <div class="toolbox-left"></div>
+                <div class="toolbox-right"></div>
+              </nav>
+              <div class="row cols-2 cols-sm-3 product-container"> 
+
+                  <!-- Skeleton Loading Starts -->
+                  <ng-container *ngIf="skeletonLoading">
+                      <div class="col-md-3">
+                          <div class="product-one">
+                              <div class="product-top skeleton-loading dark" style="height: 260px;">
+                              </div>
+                              <div class="product-bottom"  style="height: 81px;">
+                                  <p class="product-name skeleton-loading dark" style="width: 136px; height: 25px;"></p>
+                                  <p class="product-name skeleton-loading dark" style="width: 176px;height: 20px;margin-bottom: 0px;margin-top: 10px;"></p>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-3">
+                          <div class="product-one">
+                              <div class="product-top skeleton-loading dark" style="height: 260px;">
+                              </div>
+                              <div class="product-bottom"  style="height: 81px;">
+                                  <p class="product-name skeleton-loading dark" style="width: 136px; height: 25px;"></p>
+                                  <p class="product-name skeleton-loading dark" style="width: 176px;height: 20px;margin-bottom: 0px;margin-top: 10px;"></p>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-3">
+                          <div class="product-one">
+                              <div class="product-top skeleton-loading dark" style="height: 260px;">
+                              </div>
+                              <div class="product-bottom"  style="height: 81px;">
+                                  <p class="product-name skeleton-loading dark" style="width: 136px; height: 25px;"></p>
+                                  <p class="product-name skeleton-loading dark" style="width: 176px;height: 20px;margin-bottom: 0px;margin-top: 10px;"></p>
+                              </div>
+                          </div>
+                      </div>
+                  </ng-container>
+                  <!-- Skeleton Loading Ends -->
+
+                  <ng-container *ngIf="!skeletonLoading">
+                      <div class="col-md-3" *ngFor="let subCategory of category.child; let i = index">
+                          <div class="product-one">
+                            <a [routerLink]="'/category/'+(subCategory.child && subCategory.child.length ? '' : 'products/')+subCategory.slug+'/'+subCategory._id">
+                              <div class="product-top">
+                                  <img style="cursor: pointer;" [src]="subCategory.images[0].regular" class="product-image">
+                                  <div class="quick-view">
+                                      <p>View</p>
+                                  </div>
+                              </div>
+                              <div class="product-bottom">
+                                  <p class="product-name">{{subCategory.name}}</p>
+                              </div>
+                            </a>
+                          </div>
+                          
+                      </div>
+                      <div class="mt-0 pt-4 w-100" *ngIf="!category.child.length">
+                          <p class="profile-option-desc text-center">Nothing Found</p>
+                      </div>
+                  </ng-container>
+              </div>
+              <!-- <nav class="toolbox toolbox-pagination">
+                  <p class="show-info">Showing <span>12 of 56</span> Products</p>
+              </nav> -->
+            </div>
+        </div>
+    </div>
+</section>

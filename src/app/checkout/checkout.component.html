@@ -1,0 +1,568 @@
+<section class="main-product-wrapper">
+
+    <div class="page-header container-fluid px-3" style="background-image: url('assets/img/visitng-card-banner.jpg'); background-color: #1f0006;">
+        <ng-container>
+            <h1 class="page-title fadeIn">Checkout</h1>
+            <ul class="breadcrumb fadeIn">
+                <li><a href="" routerLink="/home"><i class="fas fa-home"></i></a></li>
+                <li class="delimiter">/</li>
+                <li>Checkout</li>
+            </ul>
+        </ng-container>
+    </div>
+    
+    <section class="cart-wrapper pb-5" *ngIf="globals.validateTokenCallComplete">
+        <div class="container-fluid px-4">
+
+
+            <div class="row py-4" *ngIf="auth.cart && auth.cart.length">
+                <div class="col-md-8">
+
+                    <div class="cart-left-area">
+                        <div class="step-header">
+                            <div class="step-wrapper">
+                                <div class="single-step" [ngClass]="{'active': checkoutStep >= 1}">
+                                    <div class="single-step-line"></div>
+                                    <div class="single-step-line-full"></div>
+                                    <div class="single-step-icon">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <p class="single-step-text">{{'Account'}}</p>
+                                </div>
+                                <div class="single-step" [ngClass]="{'active': checkoutStep >= 2}">
+                                    <div class="single-step-line"></div>
+                                    <div class="single-step-line-full"></div>
+                                    <div class="single-step-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <p class="single-step-text">{{'Address'}}</p>
+                                </div>
+                                <div class="single-step" [ngClass]="{'active': checkoutStep >= 3}">
+                                    <div class="single-step-line"></div>
+                                    <div class="single-step-line-full"></div>
+                                    <div class="single-step-icon">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </div>
+                                    <p class="single-step-text">{{'Summary'}}</p>
+                                </div>
+                                <div class="single-step" [ngClass]="{'active': checkoutStep == 4}">
+                                    <div class="single-step-line"></div>
+                                    <div class="single-step-line-full"></div>
+                                    <div class="single-step-icon">
+                                        <i class="fas fa-credit-card"></i>
+                                    </div>
+                                    <p class="single-step-text">{{'Payment'}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                       
+                        <div class="step-Content">
+                             <!-- Account Info -->
+                            <ng-container *ngIf="checkoutStep == 1">
+                                <div class="single-checkout-step-Content fadeIn">
+                                    <div class="ckt-account-info">
+                                        <div *ngIf="auth.isLoggedIn" class="single-checkout-step-body">
+                                            <div class="ckt-account-info">
+                                                <img *ngIf="auth.user.profile_picture" [src]="auth.user.profile_picture" class="profile-pic"/>
+                                                <p>Name : <span> {{auth.user.name}}</span></p>
+                                                <p>Email Address : <span> {{auth.user.email}}</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                <div class="checkout-btn-wrapper">
+                                    <a class="btn btn-outline-primary rounded-btn"  routerLink="/cart">{{'Go to cart'}}</a>
+                                    <a class="btn btn-primary rounded-btn" [ngClass]="{disabled: !auth.user.email}" (click)="auth.user.email ? changeCheckOutStep(2): null">{{'Continue'}}</a>
+                                </div>
+                            </ng-container>
+
+
+                            <!-- ADDRESS -->
+                            <ng-container *ngIf="checkoutStep == 2">
+                                <div *ngIf="auth.isLoggedIn" class="single-checkout-step-Content fadeIn">
+                                    <ng-container *ngIf="auth.user.shipping_adresses.length">
+                                        <div class="single-address" *ngIf="shippingAddress">
+                                            <div class="address">
+                                                <p class="mb-2 text-primary">Delivery Address<p>
+                                                <p>{{shippingAddress.full_name}}
+                                                <span class="address-type">{{shippingAddress.is_home_address ? 'Home' : 'Office'}}</span> 
+                                                <span class="contact-number">{{shippingAddress.phone_number_1}}</span>
+                                                </p>
+                                                <p class="main-address">{{shippingAddress.address1}}</p>
+                                                <p *ngIf="shippingAddress.address2" class="main-address">{{shippingAddress.address2}}</p>
+                                                <p class="main-address">{{shippingAddress.city}}, {{shippingAddress.state}}</p>
+                                                <p class="main-address">Pincode: {{shippingAddress.zipcode}}</p>
+                                            </div>
+                                            <div class="col-md-3 text-right px-0">
+                                            <a (click)="addressSelectionModal='Shipping'" class="btn btn-sm btn-primary pointer text-white">Change</a>
+                                            </div>
+                                        </div>
+    
+                                        <div class="single-address" *ngIf="billingAddress">
+                                            <div class="address">
+                                                <p class="mb-2 text-primary">Billing Address<p>
+                                                <p>{{billingAddress.full_name}}
+                                                <span class="address-type">{{billingAddress.is_home_address ? 'Home' : 'Office'}}</span> 
+                                                <span class="contact-number">{{billingAddress.phone_number_1}}</span>
+                                                </p>
+                                                <p class="main-address">{{billingAddress.address1}}</p>
+                                                <p *ngIf="billingAddress.address2" class="main-address">{{billingAddress.address2}}</p>
+                                                <p class="main-address">{{billingAddress.city}}, {{billingAddress.state}}</p>
+                                                <p class="main-address">Pincode: {{billingAddress.zipcode}}</p>
+                                            </div>
+                                            <div class="col-md-3 text-right px-0">
+                                            <a (click)="addressSelectionModal='Billing'" class="btn btn-sm btn-primary pointer text-white">Change</a>
+                                            </div>
+                                        </div>
+                                          
+                                        
+                                        <!-- <div class="row mt-4" style="padding: 0px 30px 20px;">
+                                            <div class="col-md-12">
+                                                <div>
+                                                    <button class="btn btn-outline-primary btn-login px-3 sm" type="button">
+                                                        Next
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                    </ng-container>
+                                    
+                                    <ng-container *ngIf="!auth.user.shipping_adresses.length">
+                                        <!-- <div class="row" style="padding: 20px 30px 20px;">
+                                            <div class="col-md-3">
+                                                <a (click)="addressSelectionModal='Shipping'" class="btn btn-primary text-white">Add an address</a>
+                                            </div>
+                                        </div> -->
+    
+                                       <div class="row" style="padding: 20px 30px 20px;">
+    
+                                            <div class="col-md-12 d-flex align-items-center mb-3">
+                                              <p class="mb-0 mr-2 mw-80">Delivery Address</p>
+                                            </div>
+                                            <div class="col-md-6 d-flex align-items-center mb-3">
+                                                <p class="mb-0 mr-2 mw-80">Name: </p>
+                                                <div class="login-two-inputs" style="flex: 1;">
+                                                    <input [(ngModel)]="fullName" type="text" placeholder="Enter Name" class=" ml-0 w-100" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 d-flex align-items-center mb-3">
+                                                <p class="mb-0 mr-2 mw-80">Contact: </p>
+                                                <div class="login-two-inputs" style="flex: 1;">
+                                                    <input [(ngModel)]="phoneNumber1" type="text" placeholder="Contact Number" class=" ml-0 w-100" />
+                                                </div> 
+                                            </div>
+                                            <div class="col-md-6 d-flex align-items-center mb-3">
+                                                <p class="mb-0 mr-2 mw-80">Address: </p>
+                                                <div class="login-two-inputs" style="flex: 1;">
+                                                    <input [(ngModel)]="address1" type="text" placeholder="Line 1" class=" ml-0 w-100" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 d-flex align-items-center mb-3">
+                                                <p class="mb-0 mr-2 mw-80">Address : </p>
+                                                <div class="login-two-inputs" style="flex: 1;">
+                                                    <input [(ngModel)]="address2" type="text" placeholder="Line 2" class=" ml-0 w-100"value="Sector - 5,"/>
+                                                </div> 
+                                            </div>
+                                            <div class="col-md-6 d-flex align-items-center mb-3">
+                                                <p class="mb-0 mr-2 mw-80">City : </p>
+                                                <div class="login-two-inputs" style="flex: 1;">
+                                                    <input [(ngModel)]="city" type="text" placeholder="City" class=" ml-0 w-100" value="Bandhan Bank Head Office. Bus Stop : College More"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 d-flex align-items-center mb-3">
+                                                <p class="mb-0 mr-2 mw-80">State : </p>
+                                                <div class="login-two-inputs" style="flex: 1;">
+                                                    <input [(ngModel)]="state" type="text" placeholder="State" class=" ml-0 w-100" value="700091"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 d-flex align-items-center mb-3">
+                                                <p class="mb-0 mr-2 mw-80">Pincode : </p>
+                                                <div class="login-two-inputs" style="flex: 1;">
+                                                    <input [(ngModel)]="zipcode" type="text" placeholder="Pincode" class=" ml-0 w-100" value="West Bengal"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 d-flex align-items-center">
+                                                <p class="mb-0 mr-2 mw-80">Type : </p>
+                                                <div class="login-two-inputs" style="flex: 1;">
+                                                    <select [(ngModel)]="isHomeAddress" class="form-control">
+                                                        <option value="true">Home</option>
+                                                        <option value="false">Office</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 d-flex align-items-center mt-4" (click)="showBillingAddress = !showBillingAddress;">
+                                                <i *ngIf="showBillingAddress" class="fal fa-square mr-2 text-info" style="font-size: 20px;"></i>
+                                                <i *ngIf="!showBillingAddress" class="fas fa-check-square mr-2 text-info" style="font-size: 20px;"></i>
+    
+    
+                                                <label class="mb-0" style="font-weight: 500;" >Use my delivery address as my billing address</label>
+                                            </div>
+                                        </div> 
+    
+                                        <div class="row fadeInTop" style="padding: 20px 30px 20px;" *ngIf="showBillingAddress">
+                                          <div class="col-md-12 d-flex align-items-center mb-3">
+                                            <p class="mb-0 mr-2 mw-80">Billing Address</p>
+                                          </div>
+                                          <div class="col-md-6 d-flex align-items-center mb-3">
+                                              <p class="mb-0 mr-2 mw-80">Name: </p>
+                                              <div class="login-two-inputs" style="flex: 1;">
+                                                  <input [(ngModel)]="b_fullName" type="text" placeholder="Enter Name" class=" ml-0 w-100" />
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6 d-flex align-items-center mb-3">
+                                              <p class="mb-0 mr-2 mw-80">Contact: </p>
+                                              <div class="login-two-inputs" style="flex: 1;">
+                                                  <input [(ngModel)]="b_phoneNumber1" type="text" placeholder="Contact Number" class=" ml-0 w-100" />
+                                              </div> 
+                                          </div>
+                                          <div class="col-md-6 d-flex align-items-center mb-3">
+                                              <p class="mb-0 mr-2 mw-80">Address: </p>
+                                              <div class="login-two-inputs" style="flex: 1;">
+                                                  <input [(ngModel)]="b_address1" type="text" placeholder="Line 1" class=" ml-0 w-100" />
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6 d-flex align-items-center mb-3">
+                                              <p class="mb-0 mr-2 mw-80">Address : </p>
+                                              <div class="login-two-inputs" style="flex: 1;">
+                                                  <input [(ngModel)]="b_address2" type="text" placeholder="Line 2" class=" ml-0 w-100"value="Sector - 5,"/>
+                                              </div> 
+                                          </div>
+                                          <div class="col-md-6 d-flex align-items-center mb-3">
+                                              <p class="mb-0 mr-2 mw-80">City : </p>
+                                              <div class="login-two-inputs" style="flex: 1;">
+                                                  <input [(ngModel)]="b_city" type="text" placeholder="City" class=" ml-0 w-100" value="Bandhan Bank Head Office. Bus Stop : College More"/>
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6 d-flex align-items-center mb-3">
+                                              <p class="mb-0 mr-2 mw-80">State : </p>
+                                              <div class="login-two-inputs" style="flex: 1;">
+                                                  <input [(ngModel)]="b_state" type="text" placeholder="State" class=" ml-0 w-100" value="700091"/>
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6 d-flex align-items-center mb-3">
+                                              <p class="mb-0 mr-2 mw-80">Pincode : </p>
+                                              <div class="login-two-inputs" style="flex: 1;">
+                                                  <input [(ngModel)]="b_zipcode" type="text" placeholder="Pincode" class=" ml-0 w-100" value="West Bengal"/>
+                                              </div>
+                                          </div>
+                                          <div class="col-md-6 d-flex align-items-center">
+                                              <p class="mb-0 mr-2 mw-80">Type : </p>
+                                              <div class="login-two-inputs" style="flex: 1;">
+                                                  <select [(ngModel)]="b_isHomeAddress" class="form-control">
+                                                      <option value="true">Home</option>
+                                                      <option value="false">Office</option>
+                                                  </select>
+                                              </div>
+                                          </div>
+                                        </div>
+    
+                                      <div class="row mt-4" style="padding: 0px 30px 20px;">
+                                        <div class="col-md-12">
+                                            <div>
+                                                <button (click)="addNewAddress()" class="btn btn-outline-primary btn-login px-3 sm" type="button">
+                                                    Save
+                                                </button>
+                                            </div>
+                                        </div>
+                                      </div>
+                                        
+                                    </ng-container>
+                                </div>
+                                <!-- <div style="height: 60px;"></div> -->
+                                <div class="checkout-btn-wrapper">
+                                    <a class="btn btn-outline-primary rounded-btn" (click)="changeCheckOutStep(1)">{{'Back'}}</a>
+                                    <a class="btn btn-primary rounded-btn" [ngClass]="{disabled : !(auth.user.shipping_adresses && auth.user.shipping_adresses.length > 0)}" (click)="auth.user.shipping_adresses && auth.user.shipping_adresses.length > 0 ? changeCheckOutStep(3): null">{{'Continue'}}</a>
+                                </div>
+                            </ng-container>
+                            
+                            
+                            <!-- SUMMARY -->
+                            <ng-container *ngIf="checkoutStep == 3">
+                                <div *ngIf="auth.isLoggedIn" class="single-checkout-step-Content fadeIn">
+                                    <div class="single-checkout-step-body table-responsive">
+                                        <table class="shop-table cart-table mt-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Total Item{{auth.cart.length ? 's' : ''}} : {{auth.cart.length}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let singleCartItem of auth.cart; let cartItemIndex = index">
+                                                    <td class="product-thumbnail" style="width: 130px;">
+                                                        <figure>
+                                                            <a style="cursor: pointer;" href="" [routerLink]="'/product/'+singleCartItem.product.info.slug+'/'+singleCartItem.product._id">
+                                                                <img [src]="singleCartItem.product.info.images[0].thumb" width="100" height="100" alt="product">
+                                                            </a>
+                                                            <a *ngIf="singleCartItem.design" (click)="globals.viewingDesign=singleCartItem.design" class="view-design" style="display: inline-flex;"><i class="fas fa-image"></i> View Design</a>
+                                                        </figure>
+                                                    </td>
+                                                    <td class="product-name sm-width">
+                                                        <div class="product-name-section">
+                                                            <a style="cursor: pointer;" href="" [routerLink]="'/product/'+singleCartItem.product.info.slug+'/'+singleCartItem.product._id">{{singleCartItem.product.info.name}}</a>
+                                                        </div>
+                                                        <ng-container *ngFor="let variation of singleCartItem.variation_selcted.variation">
+                                                            <p>{{variation.group}} : {{variation.property}}</p>
+                                                        </ng-container>
+                                                        <!-- <p *ngIf="singleCartItem.design" (click)="globals.viewingDesign=singleCartItem.design">View Design</p> -->
+                                                    </td>
+                                                    <td class="product-subtotal sm-width">
+                                                        <span class="amount">Price : ₹ {{singleCartItem.unitPrice | number : '1.2-2'}}</span>
+                                                    </td>
+                                                    <td class="product-quantity sm-width">
+                                                        <span class="amount">Quantity : {{singleCartItem.variation_price_selcted.qty}}</span>
+                                                    </td>
+                                                    <td class="product-price sm-width">
+                                                        <span class="amount">Subtotal : ₹ {{singleCartItem.final_price | number : '1.2-2'}}</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="checkout-btn-wrapper">
+                                    <a class="btn btn-outline-primary rounded-btn" (click)="changeCheckOutStep(2)">{{'Back'}}</a>
+                                    <a class="btn btn-primary rounded-btn" (click)="changeCheckOutStep(4)">{{'Continue'}}</a>
+                                </div>
+                            </ng-container>
+
+                            <!-- Payment -->
+                            <ng-container *ngIf="checkoutStep == 4">
+                                <div *ngIf="auth.isLoggedIn" class="single-checkout-step-Content fadeIn">
+                                    <p class="step-content-title">{{'How do you want to pay ?'}}</p>
+                                    <div class="single-checkout-step-body row">
+                                        <div class="col-md-4">
+                                            <a style="min-width: 160px;color: #333;" (click)="setPaymentMode('Cash')" class="payment-btn pointer" [ngClass]="{'active': paymentMode == 'Cash'}">
+                                              <img src="assets/img/cod.png" class="payment-icon"/>
+                                              {{'Cash on Delivery'}}
+                                            </a>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a style="min-width: 160px;color: #333;" (click)="setPaymentMode('Online')" class="payment-btn pointer" [ngClass]="{'active': paymentMode == 'Online'}">
+                                              <img src="assets/img/net-banking.png" class="payment-icon"/>
+                                              {{'Online Payment'}}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkout-btn-wrapper">
+                                    <a class="btn btn-outline-primary rounded-btn" (click)="changeCheckOutStep(3)">{{'Back'}}</a>
+                                    <button class="btn btn-primary rounded-btn" (click)="placeOrder()" [disabled]="!(paymentMode != '')">{{'Place Order'}}</button>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cart-right-area">
+                        <div class="cl-header">
+                            <p>Order Summary</p>
+                            <!-- <p class="item-count">Total Item 3</p> -->
+                        </div>
+                        <div class="cl-body">
+                            <table class="shop-table amount-table cart-table mt-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="product-subtotal border-0">
+                                            <span class="amount">Item Total</span>
+                                        </td>
+                                        <td class="product-price border-0 text-right">
+                                            <span class="amount">₹ {{auth.cart[0].cart_master.total_cart_price - auth.cart[0].cart_master.total_cart_disc | number : '1.2-2'}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="auth.cart[0].cart_master.total_delivery_charge > 0">
+                                        <td class="product-subtotal border-0">
+                                            <span class="amount">Delivery Charges</span>
+                                        </td>
+                                        <td class="product-price border-0 text-right p-0">
+                                            <span *ngIf="(auth.cart[0].cart_master.total_cart_final_value - auth.cart[0].cart_master.total_delivery_charge) <= globals.settings.freeShippingAbove" class="amount">₹ {{auth.cart[0].cart_master.total_delivery_charge | number : '1.2-2'}}</span>
+                                            <span *ngIf="(auth.cart[0].cart_master.total_cart_final_value - auth.cart[0].cart_master.total_delivery_charge) > globals.settings.freeShippingAbove" class="amount">Free</span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="auth.cart[0].cart_master.total_custom_design_charge > 0">
+                                        <td class="product-subtotal border-0">
+                                            <span class="amount">Custom Design Charges</span>
+                                        </td>
+                                        <td class="product-price border-0 text-right">
+                                            <span class="amount">₹ {{auth.cart[0].cart_master.total_custom_design_charge | number : '1.2-2'}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="product-subtotal">
+                                            <span class="amount">Order Total</span>
+                                        </td>
+                                        <td class="product-price text-right">
+                                            <span *ngIf="(auth.cart[0].cart_master.total_cart_final_value - auth.cart[0].cart_master.total_delivery_charge) > globals.settings.freeShippingAbove" class="amount">₹ {{auth.cart[0].cart_master.total_cart_final_value - auth.cart[0].cart_master.total_delivery_charge | number : '1.2-2'}}</span>
+
+                                            <span *ngIf="(auth.cart[0].cart_master.total_cart_final_value - auth.cart[0].cart_master.total_delivery_charge) <= globals.settings.freeShippingAbove" class="amount">₹ {{auth.cart[0].cart_master.total_cart_final_value | number : '1.2-2'}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr style="margin: 5px 0px 20px;border-top: 1px solid #e1e1e1;">
+                            <p class="text-success text-center">Your Total Savings on this order ₹ {{auth.cart[0].cart_master.total_cart_disc | number : '1.2-2'}}</p>
+                        </div>
+                        <div class="cl-footer pt-4">
+                            <!-- <a class="btn btn-primary text-white">Place Order <i class="fal fa-check-circle ml-2"></i></a>
+                            <div class="cart-payment-img-wrapper">
+                                <img src="assets/img/cards-a.png" class="card-image"/>
+                            </div> -->
+                            <p class="strong mb-0" style="font-size: 15px;">Amount Payable : 
+                                
+                                <span *ngIf="(auth.cart[0].cart_master.total_cart_final_value - auth.cart[0].cart_master.total_delivery_charge) > globals.settings.freeShippingAbove" style="float: right;">₹ {{auth.cart[0].cart_master.total_cart_final_value - auth.cart[0].cart_master.total_delivery_charge | number : '1.2-2'}}</span>
+
+                                <span *ngIf="(auth.cart[0].cart_master.total_cart_final_value - auth.cart[0].cart_master.total_delivery_charge) <= globals.settings.freeShippingAbove" style="float: right;">₹ {{auth.cart[0].cart_master.total_cart_final_value | number : '1.2-2'}}</span>
+                            
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="row py-4" *ngIf="auth.cart && !auth.cart.length">
+              <div class="col-md-12">
+                 <div class="cart-left-area text-center">
+                     <img src="assets/img/empty-cart.png" class="empty-cart"/>
+                     <p class="cart-h">Your cart is empty</p>
+                     <p class="cart-sh">You have no items in your shopping cart</p>
+                     <p class="cart-sh">Let's go buy something</p>
+                     <a class="cart-btn" href="" routerLink="/home">Shop Now</a>
+                  </div>
+              </div>
+            </div>
+
+            <div class="row mt-4" *ngIf="auth.cart && auth.cart.length">
+                <div class="col-md-3">
+                    <div class="cart-single-column">
+                        <i class="fal fa-shield-check"></i>
+                        <p class="ct-title">Secure Payment</p>
+                        <p class="sub-title">All payments are 100% Secured through our trusted payment gateway</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="cart-single-column">
+                        <i class="fal fa-lock"></i>
+                        <p class="ct-title">Trust Pay</p>
+                        <p class="sub-title">100% Payment Protection. Easy and Hassle Free Return Policy</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="cart-single-column">
+                        <i class="fal fa-user-headset"></i>
+                        <p class="ct-title">Help Center</p>
+                        <p class="sub-title">Got a question? Get in touch with us. We will help you out</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="cart-single-column">
+                        <i class="fal fa-smile-beam"></i>
+                        <p class="ct-title">100% Satisfaction</p>
+                        <p class="sub-title">Every time. Any reason. Or we'll make it right no matter what.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+</section>
+
+<!-- ADDRESS MODAL -->
+<div class="full-modal fadeIn" *ngIf="addressSelectionModal" style="padding-top: 3%;">
+  <div class="position-relative">
+      <div class="login-modal" style="width:1000px;background:white;">        
+          <div class="d-flex h-100">
+            <app-my-address class="address-modal" [(selectedShippingAddress)]="shippingAddress" [(selectedBillingAddress)]="billingAddress" [(addressModalType)]="addressSelectionModal"></app-my-address>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- ADDRESS MODAL ENDS -->

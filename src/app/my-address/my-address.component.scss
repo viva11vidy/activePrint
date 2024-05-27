@@ -1,0 +1,48 @@
+.profile-info-section p.profile-section-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: #525252;
+  margin: 0px 0px 8px;
+}
+/* .profile-info-section .profile-information div:first-child {
+  margin-top: 30px;
+}
+.profile-info-section .profile-information div {
+  display: flex;
+  margin-top: 20px;
+  align-items: center;
+} */
+.profile-info-section .profile-information div p.profile-option {
+  font-size: 15px;
+  color: #5f5f5f;
+  font-weight: 600;
+  min-width: 160px;
+  margin-right: 20px;
+  margin-bottom: 0px;
+}
+.profile-info-section .profile-information div p.profile-option-desc {
+  font-size: 15px;
+  color: #b1b1b1;
+  font-weight: 400;
+  min-width: 100px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+}
+.profile-information .single-address {
+  border: 1px solid #eaeaea;
+  border-radius: 6px;
+  justify-content: space-between;
+}
+.profile-information .single-address:hover {
+  background: transparent;
+  cursor: default;
+}
+.single-address .dropdown-menu {
+  border: 1px solid #eaeaea;
+  box-shadow: none;
+  min-width: 8rem;
+}
+.single-address .dropdown-item {
+  font-size: 13px;
+  padding: 10px 15px;
+}

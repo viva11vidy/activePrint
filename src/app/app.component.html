@@ -1,0 +1,782 @@
+<ngx-loading-bar color="#ffffff" includeSpinner="false" height="3px"></ngx-loading-bar>
+<ff-alerts></ff-alerts>
+
+<ng-container *ngIf="globals.validateTokenCallComplete">
+    
+    <!-- Header-->
+    <header class="header-section">
+
+
+
+
+
+        <!-- THIS MENU (MOBILE) IS USED BELOW TOO / STRUCTURE NOT SAME --- ANY CHANGE should be done above-->
+        <div class="mobile-sidemenu navbar-collapse" [ngClass]="{'open':mobileSideMenu}">
+            
+            <span class="close-sidemenu" (click)="toggleMobileSideMenu()">
+                <i class="fas fa-times"></i>
+            </span>
+            <div class="col-md-12" style="position: unset;">
+                <img src="assets/img/logo-light.png" class="sidemenu-logo"/>
+
+
+
+                
+
+
+
+                <div id="accordion">
+
+
+                    <div class="single-accord">
+                      <div class="" id="headingOne">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            All Products
+                            </button>
+                      </div>
+                  
+                      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                        
+                        <div class="container-fluid accord-detail" *ngIf="categories.length">
+                            <ul class="" >
+                                <li class="accord-single-cat" *ngFor="let category of categories">
+
+                                    <a  (click)="toggleMobileSideMenu()" class="accord-single-cat-heading" [routerLink]="'/category/'+(category.child && category.child.length ? '' : 'products/')+category.slug+'/'+category._id">{{category.name}}</a>
+
+                                    <ul class="accord-single-cat-subcat" *ngIf="category.child && category.child.length">
+                                        <li class="subcat" *ngFor="let subCategory of category.child">
+                                            <a  (click)="toggleMobileSideMenu()" [routerLink]="'/category/products/'+subCategory.slug+'/'+subCategory._id">{{subCategory.name}}</a>
+                                        </li>
+                                    </ul>
+
+                                    <ul class="accord-single-cat-subcat" *ngIf="category.items && category.items.length">
+                                        <li class="pro" *ngFor="let product of category.items">
+                                            <a  (click)="toggleMobileSideMenu()" [routerLink]="'/product/'+product.slug+'/'+product._id">{{product.name}}</a>
+                                        </li>
+                                    </ul>
+
+                                </li>
+                            </ul>
+                        </div>
+                        
+                      </div>
+                    </div>
+
+
+                    <!-- <ng-container *ngFor="let category of categories">
+                        <ng-container>
+                            <div class="single-accord">
+                                
+                                <ng-container *ngIf="category.child && category.child.length">
+                                    <div class="" id="{{category._id}}">
+                                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        All Products
+                                        </button>
+                                    </div>
+                                </ng-container>
+                            
+                                <div id="collapseOne" class="collapse" aria-labelledby="{{category._id}}" data-parent="#accordion">
+                                  
+                                  <div class="container-fluid accord-detail" *ngIf="categories.length">
+                                      <ul class="" >
+                                          <li class="accord-single-cat" *ngFor="let category of categories">
+          
+                                              <a class="accord-single-cat-heading" [routerLink]="'/category/'+(category.child && category.child.length ? '' : 'products/')+category.slug+'/'+category._id">{{category.name}}</a>
+          
+                                              <ul class="accord-single-cat-subcat" *ngIf="category.child && category.child.length">
+                                                  <li class="subcat" *ngFor="let subCategory of category.child">
+                                                      <a [routerLink]="'/category/products/'+subCategory.slug+'/'+subCategory._id">{{subCategory.name}}</a>
+                                                  </li>
+                                              </ul>
+          
+                                              <ul class="accord-single-cat-subcat" *ngIf="category.items && category.items.length">
+                                                  <li class="pro" *ngFor="let product of category.items">
+                                                      <a [routerLink]="'/product/'+product.slug+'/'+product._id">{{product.name}}</a>
+                                                  </li>
+                                              </ul>
+          
+                                          </li>
+                                      </ul>
+                                  </div>
+                                  
+                                </div>
+                              </div>
+                        </ng-container>
+                    </ng-container> -->
+                    
+                  </div>
+
+
+
+
+
+
+
+
+                <ul class="navbar-nav mr-auto">
+                  <ng-container *ngFor="let category of categories">
+                    <li class="nav-item">
+                      <a class="nav-link" (click)="toggleMobileSideMenu()" [routerLink]="'/category/'+(category.child && category.child.length ? '' : 'products/')+category.slug+'/'+category._id">{{category.name}}</a>
+                      <div class="container-fluid hover-menu" *ngIf="category.child && category.child.length">
+                        <ul class="hover-menu-full-ul" >
+                          <li class="hover-menu-single-column" *ngFor="let subCategory of category.child">
+                              <a class="submenu-title" [routerLink]="'/category/products/'+subCategory.slug+'/'+subCategory._id">{{subCategory.name}}</a>
+                              <ul *ngIf="subCategory.items && subCategory.items.length">
+                                  <li class="group_cat_product" *ngFor="let product of subCategory.items">
+                                      <a [routerLink]="'/product/'+product.slug+'/'+product._id">{{product.name}}</a>
+                                  </li>
+                              </ul>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="container-fluid hover-menu" *ngIf="category.items && category.items.length">
+                        <ul class="hover-menu-full-ul" >
+                          <li class="hover-menu-single-column" >
+                              <a class="submenu-title"></a>
+                              <ul *ngIf="category.items && category.items.length">
+                                  <li class="group_cat_product" *ngFor="let product of category.items">
+                                      <a [routerLink]="'/product/'+product.slug+'/'+product._id">{{product.name}}</a>
+                                  </li>
+                              </ul>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ng-container>
+                </ul>
+
+                <div class="">
+                    <ul class="mobile-sidemenu-bottom navbar-right">
+                        <ng-container *ngIf="auth.isLoggedIn">
+                            <li class="nav-item" >
+                                <a  (click)="toggleMobileSideMenu()" class="nav-link" href="" routerLink="/my-account/info"><i class="fal fa-user"></i></a>
+                            </li>
+                            <!-- <li class="nav-item">
+                                <a class="nav-link" href=""><i class="far fa-heart"></i></a>
+                            </li> -->
+                            <li class="nav-item">
+                                <span class="cart-count" *ngIf="auth.cart.length">{{auth.cart.length}}</span>
+                                <a  (click)="toggleMobileSideMenu()" class="nav-link" href="" routerLink="/cart"><i class="fal fa-shopping-cart"></i></a>
+                            </li>
+                            <li class="nav-item" style="float: right;">
+                                <button class="heading-solution-button">Enterprise Solution</button>
+                            </li>
+                        </ng-container>
+                        <li class="nav-item" *ngIf="!auth.isLoggedIn">
+                            <a class="btn heading-login-button" (click)="globals.openLoginModal();toggleMobileSideMenu()">Login / Signup</a>
+                        </li> 
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <!-- THIS MENU (MOBILE) IS USED BELOW TOO / STRUCTURE NOT SAME --- ANY CHANGE should be done above -->
+
+
+
+
+
+
+
+
+
+        <div class="top-header">
+            <div class="container-fluid d-flex align-items-center justify-content-between">
+                <div class="left-area col-md-6">
+                    <div class="follow-us">
+                        <p>
+                            <span>Follow Us </span>
+                            <a class="social-media" target="_blank" href="{{globals.settings.socialFacebookLink}}">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a class="social-media" target="_blank" href="{{globals.settings.socialInstagramLink}}">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a class="social-media" target="_blank" href="{{globals.settings.socialTwitterLink}}">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </p>
+                    </div>
+                    <p class="free">Free shipping orders above ₹{{globals.settings.freeShippingAbove}}</p>
+                </div>
+                <div class="right-area col-md-6">
+                    <a *ngIf="auth.isLoggedIn" class="text-white pointer ot" href="" routerLink="/my-account/orders">Order Tracking</a>
+                    <a *ngIf="!auth.isLoggedIn" class="text-white pointer ot" (click)="globals.openLoginModal();">Order Tracking</a>
+
+                    <a class="second" href="mailto:{{globals.settings.customerSupportEmail}}"> <i class="far fa-envelope"></i> {{globals.settings.customerSupportEmail}}</a>
+                    <a class="second" href="tel:{{globals.settings.customerSupportContactNumber}}"> <i class="fas fa-headset"></i> {{globals.settings.customerSupportContactNumber}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="middle-header">
+            <div class="container-fluid d-flex align-items-center mob-header">
+                <div class="col-md-2 mob-logo-center">
+                    <a class="navbar-brand" href="" routerLink="/home">
+                        <img src="assets/img/logo-dark.png" class="logo"/>
+                    </a>
+                </div>
+                <div class="row col-md-10 align-items-center mob-search-container">
+
+                    <!-- <FOR Mobile> -->
+                    <div class="col-1 col-lg-2 col-xl-2 only-mobile p-0" (click)="toggleMobileSideMenu()">
+                        <span class="cart-count" *ngIf="auth.cart.length">{{auth.cart.length}}</span>
+                        <div class="mobile-icon">
+                            <i class="fas fa-bars"></i>
+                        </div>
+                    </div>
+                    <!-- </FOR Mobile> -->
+
+
+                    <div class="col-11 col-lg-10 col-xl-10 ompr-0">
+                        <form class="search-form">
+                            <i class="fas fa-search"></i>
+                            <input class="search-box" type="text" placeholder="Search Here" autocomplete="off" #searchInputElement (keyup.enter)="getSearchResultWithKeywords(searchString)"  [(ngModel)]="searchString" (ngModelChange)="checkSearchEmpty()" [ngModelOptions]="{standalone: true}" />
+                            <button class="search-btn fadeIn" *ngIf="clearIcon" (click)="clearSearch();"><i class="far fa-times"></i></button>
+                        </form>
+    
+                        <div class="search-listing fadeIn" *ngIf="searchSuggestion">
+                          <!-- SKELETON LOADING -->
+                          <div class="row skeleton" *ngIf="suggestionSkeletonLoader">
+                            <div class="col-md-12" *ngFor="let skeletonDemo of skeletonDemoLoading">
+                              <div class="single-search-option">
+                                <div class="skeleton-loading" style="height: 35px;width: 53px;"></div>
+                                <p class="skeleton-loading" style="height: 19px;width: 35%;"></p>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- SKELETON LOADING -->
+        
+                          <div *ngIf="!suggestionSkeletonLoader && suggestedProducts && suggestedProducts.length">
+                            <ng-container *ngFor="let product of suggestedProducts">
+                              <div [routerLink]="'/product/'+product.slug+'/'+product._id" class="single-search-option" (click)="clearSearch();">
+                                <img [src]="product.images[0].thumb" class="sg-img"/>
+                                <div>
+                                  <p>{{product.name}}</p>
+                                  <p class="search-productcategory"> in {{product.category[0].name}}</p>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </div>
+                          <div *ngIf="!suggestionSkeletonLoader && suggestedKeywords && suggestedKeywords.length">
+                            <ng-container *ngFor="let suggestedKeyword of suggestedKeywords">
+                              <div (click)="setSearchTextAndPerformSearch(suggestedKeyword.keyword)" class="single-search-option">
+                                <i class="fas fa-search"></i>
+                                <p [innerHTML]="suggestedKeyword.splittedKeyword">
+                                </p>
+                              </div>
+                            </ng-container>
+                          </div>
+                          <!-- If no result found -->
+                          <ng-container *ngIf="!suggestionSkeletonLoader && !suggestedProducts.length && !suggestedKeywords.length">
+                            <div class="single-search-option-ns">
+                              <p>
+                                No Result Found
+                              </p>
+                            </div>
+                          </ng-container>
+                          
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-xl-2 only-desktop">
+
+
+                        
+
+
+
+                        <div class="contact-info-wrapper">
+                            <!-- <div class="single-contact-info">
+                                <i class="far fa-envelope"></i>
+                                <div>
+                                    <a class="first">Email Us</a><br>
+                                    <a class="second">info@activeprints.in</a>
+                                </div>
+                            </div> -->
+                            <!-- <div class="single-contact-info">
+                                <i class="fas fa-headset"></i>
+                                <div>
+                                    <a class="first">Call Us</a><br>
+                                    <a class="second">0125 - 5845</a>
+                                </div>
+                            </div> -->
+                            <button class="heading-solution-button">Enterprise Solution</button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="bottom-header">
+            <div class="container-fluid d-flex align-items-center">
+
+                <nav class="navbar navbar-expand-lg stroke" style="position: unset;">
+                    <!-- THIS MENU IS USED ABOVE TOO / STRUCTURE NOT SAME --- ANY CHANGE should be done above-->
+                    <div class="navbar-collapse row" id="navbarSupportedContent">
+                        <div class="col-md-11" style="position: unset;">
+                            <ul class="navbar-nav mr-auto">
+                              <li class="nav-item">
+                                <a class="nav-link" [routerLink]="'/category/all'">All Products</a>
+                                <div class="container-fluid hover-menu" *ngIf="categories.length">
+                                  <ul class="hover-menu-full-ul" >
+                                    <li class="hover-menu-single-column" *ngFor="let category of categories">
+                                        <a class="submenu-title" [routerLink]="'/category/'+(category.child && category.child.length ? '' : 'products/')+category.slug+'/'+category._id">{{category.name}}</a>
+                                        <ul *ngIf="category.child && category.child.length">
+                                            <li class="group_cat_product" *ngFor="let subCategory of category.child">
+                                                <a [routerLink]="'/category/products/'+subCategory.slug+'/'+subCategory._id">{{subCategory.name}}</a>
+                                            </li>
+                                        </ul>
+                                        <ul *ngIf="category.items && category.items.length">
+                                          <li class="group_cat_product" *ngFor="let product of category.items">
+                                              <a [routerLink]="'/product/'+product.slug+'/'+product._id">{{product.name}}</a>
+                                          </li>
+                                        </ul>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </li>
+                              <ng-container *ngFor="let category of categories">
+                                <li class="nav-item">
+                                  <a class="nav-link" [routerLink]="'/category/'+(category.child && category.child.length ? '' : 'products/')+category.slug+'/'+category._id">{{category.name}}</a>
+                                  <div class="container-fluid hover-menu" *ngIf="category.child && category.child.length">
+                                    <ul class="hover-menu-full-ul" >
+                                      <li class="hover-menu-single-column" *ngFor="let subCategory of category.child">
+                                          <a class="submenu-title" [routerLink]="'/category/products/'+subCategory.slug+'/'+subCategory._id">{{subCategory.name}}</a>
+                                          <ul *ngIf="subCategory.items && subCategory.items.length">
+                                              <li class="group_cat_product" *ngFor="let product of subCategory.items">
+                                                  <a [routerLink]="'/product/'+product.slug+'/'+product._id">{{product.name}}</a>
+                                              </li>
+                                          </ul>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                  <div class="container-fluid hover-menu" *ngIf="category.items && category.items.length">
+                                    <ul class="hover-menu-full-ul" >
+                                      <li class="hover-menu-single-column" >
+                                          <a class="submenu-title"></a>
+                                          <ul *ngIf="category.items && category.items.length">
+                                              <li class="group_cat_product" *ngFor="let product of category.items">
+                                                  <a [routerLink]="'/product/'+product.slug+'/'+product._id">{{product.name}}</a>
+                                              </li>
+                                          </ul>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </li>
+                              </ng-container>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- THIS MENU IS USED ABOVE TOO / STRUCTURE NOT SAME --- ANY CHANGE should be done above -->
+                </nav>
+
+
+                <!-- THIS STRUCTURE SAME used above--- ANY CHANGE should be done above-->
+                <div class="menu-right-area top-cart-area">
+                    <ul class="navbar-right">
+                        <ng-container *ngIf="auth.isLoggedIn">
+                            <li class="nav-item">
+                                <a class="nav-link" href="" routerLink="/my-account/info"><i class="fal fa-user"></i></a>
+                            </li>
+                            <!-- <li class="nav-item">
+                                <a class="nav-link" href=""><i class="far fa-heart"></i></a>
+                            </li> -->
+                            <li class="nav-item">
+                                <span class="cart-count" *ngIf="auth.cart.length">{{auth.cart.length}}</span>
+                                <a class="nav-link" href="" routerLink="/cart"><i class="fal fa-shopping-cart"></i></a>
+                            </li>
+                        </ng-container>
+                        <li class="nav-item" *ngIf="!auth.isLoggedIn">
+                            <a class="btn heading-login-button" (click)="globals.openLoginModal();">Login / Signup</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- THIS STRUCTURE SAME used above--- ANY CHANGE should be done above-->
+
+            </div>
+        </div> 
+    </header>
+
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+
+    <router-outlet></router-outlet>
+
+
+    <!-- FOOTER STARTS -->
+    <section class="newsletter">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="col-md-7 d-flex align-items-center">
+                    <i class="fas fa-envelope-open-text newsletter-icon"></i>
+                    <div>
+                        <p class="newsletter-title">Newsletter & Get Updates</p>
+                        <p class="newsletter-subtitle">Signup for newsletter to get up-to-date from us</p>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="d-flex align-items-center w-100 justify-content-end">
+                        <!-- <input class="newsletter-input" type="text" placeholder="Email Address" /> -->
+                        <a (click)="showNewsletter=true" class="newsletter-submit">Subscribe Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer1 ">
+        <div class="container-fluid d-flex align-items-center">
+            <div class="col-12">
+                <div class="footer-main">
+                    <div class="footer-box">
+                        <div class="footer-title mobile-title">
+                            <h5>about</h5>
+                        </div>
+                        <div class="footer-contant">
+                            <div class="footer-logo">
+                            <a href="index.html">
+                                <img src="assets/img/logo-dark.png" class="img-fluid" alt="logo">
+                            </a>
+                            </div>
+                            <p>Qolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibham liber tempor cum soluta nobis eleifend option congue nihil uarta decima et quinta. Ut wisi enim ad minim veniam,.or cum soluta nobis eleifend option congue nihil uarta decima et quinta. Ut wisi enim ad.</p>
+                            <a class="social-title">Social</a>
+                            <ul class="social">
+                                <li><a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-instagram"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-twitter"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="footer-box">
+                        <div class="footer-title">
+                            <h5>Product List</h5>
+                        </div>
+                        <div class="footer-contant">
+                            <ul>
+                                <ng-container *ngFor="let category of categories">
+                                    <li>
+                                        <a class="pointer" (click)="goToCategoryDetailsPage(category._id,category.slug)">{{category.name}}</a>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="footer-box">
+                        <div class="footer-title">
+                            <h5>Quick Links</h5>
+                        </div>
+                        <div class="footer-contant">
+                            <ul>
+                            <li><a class="pointer" routerLink="/about-us">About Us</a></li>
+                            <li><a class="pointer" routerLink="/privacy-policy">Privacy Policy</a></li>
+                            <li><a class="pointer" routerLink="/terms-and-conditions">Terms & Conditions</a></li>
+                            <li><a class="pointer" routerLink="/faqs">FAQs</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="footer-box">
+                        <div class="footer-title">
+                            <h5>Customer Care</h5>
+                        </div>
+                        <div class="footer-contant">
+                          <ul>
+
+                            <li *ngIf="auth.isLoggedIn"><a href="" routerLink="/my-account/info">My Account</a></li>
+                            <li *ngIf="!auth.isLoggedIn"><a class="pointer" (click)="globals.openLoginModal();">My Account</a></li>
+
+                            <li *ngIf="auth.isLoggedIn"><a href="" routerLink="/my-account/orders">My Orders</a></li>
+                            <li *ngIf="!auth.isLoggedIn"><a class="pointer" (click)="globals.openLoginModal();">My Orders</a></li>
+
+                            <li *ngIf="auth.isLoggedIn"><a href="" routerLink="/my-account/wishlist">Wishlist</a></li>
+                            <li *ngIf="!auth.isLoggedIn"><a class="pointer" (click)="globals.openLoginModal();">Wishlist</a></li>
+
+                            <li *ngIf="auth.isLoggedIn"><a class="pointer" href="" routerLink="/my-account/customer-care">Customer Care</a></li>
+                            <li *ngIf="!auth.isLoggedIn"><a class="pointer" (click)="globals.openLoginModal();">Customer Care</a></li>
+
+                            <li *ngIf="auth.isLoggedIn"><a class="pointer" href="" routerLink="/my-account/support-chat">Support Chat</a></li>
+                            <li *ngIf="!auth.isLoggedIn"><a class="pointer" (click)="globals.openLoginModal();">Support Chat</a></li>
+                          </ul>
+                        </div>
+                    </div>
+
+            
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-2">
+        
+        <div class="footer-top">
+            <div class="single-footer-top">
+                <i class="fas fa-phone-volume sft"></i>
+                <div>
+                    <p class="sft-title"><a class="scf-link" href="tel:{{globals.settings.customerSupportContactNumber}}">{{globals.settings.customerSupportContactNumber}}</a></p>
+                    <p class="sft-subtitle">Our helpline number</p>
+                </div>
+            </div>
+            <div class="single-footer-top">
+                <i class="fas fa-envelope-open-text sft"></i>
+                <div>
+                    <p class="sft-title"><a class="scf-link" href="mailto:{{globals.settings.customerSupportEmail}}">{{globals.settings.customerSupportEmail}}</a></p>
+                    <p class="sft-subtitle">For any query get in touch with us</p>
+                </div>
+            </div>
+            <div class="single-footer-top">
+                <i class="fas fa-map-signs sft"></i>
+                <div>
+                    <p class="sft-title">{{globals.settings.companyAddressLine1}}</p>
+                    <p class="sft-subtitle">{{globals.settings.companyAddressLine2}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container-fluid d-flex align-items-center justify-content-between">
+                <p class="copyright">© 2022 Active Publicity & PrintS Pvt. Ltd. All Rights Reserved</p>
+                <img src="assets/img/cards-a.png" class="cards-a"/>
+            </div>
+        </div>
+    </div>
+    <!-- FOOTER ENDS -->
+    
+
+    <!-- MODALS -->
+    <!-- LOGIN MODAL -->
+    <div class="full-modal fadeIn" *ngIf="globals.showloginModal"  [@leaveAnimation] style="z-index: 999;">
+        <div class="position-relative">
+            <div class="close-icon-wrapper">
+                <a (click)="globals.closeLoginModal();" class="login-close-butn text-dark pointer"><i class="fal fa-times"></i></a>
+            </div>
+            <!-- Login Screen -->
+            <div *ngIf="loginScreen" class="login-modal" style="min-height: 464px;">        
+                <div class="d-flex align-items-center h-100 mob-column">
+                    <div class="col-md-5 login-left-area pt-4 pb-2">
+                        <div>
+                            <h3 class="text-white">Login</h3>
+                            <p class="text-white">Get access to your Account, Orders and Wishlists</p>
+                        </div>
+                        <div>
+                            <img src="assets/img/lgn-bnnr.png" class="lgn-bnnr"/>
+                        </div>
+                    </div>
+                    <div class="col-md-7 login-right-area pt-4 pb-2"> 
+                        <div class="login-two-start">
+                            <div>
+                                <p class="text-center text-muted mt-1 mb-3 font-14">Please Log into your account</p>
+                                <div class="login-two-inputs mt-4">
+                                    <input type="text" placeholder="Email" [(ngModel)]="email"/> 
+                                    <i class="fal fa-envelope"></i>
+                                </div>
+                                <div class="login-two-inputs mt-4">
+                                    <input type="password" placeholder="Password" [(ngModel)]="password"/> 
+                                    <i class="fal fa-lock"></i>
+                                </div>
+                                
+                                <div class="login-two-inputs mt-5 text-center d-flex">
+                                    <button [disabled]="!(email && password)" class="btn sm btn-outline-primary btn-login w-100 ml-3 mr-3" type="button" (click)="login()">
+                                        Login
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 text-center font-12 strong">
+                                <a (click)="showForgotPassword()" class="text-primary" style="cursor: pointer;">Forgot your Password ?</a>
+                                <p class="default-text">New to Active Print? <a (click)="showSignUp();" href="javascript:void(0)" class="text-primary">Create an account</a></p>
+                            </div>
+                            
+                        </div>
+
+                       
+                    </div>
+                </div>
+            </div>
+            <!-- FORGOT PASSWORD Screen -->
+            <div *ngIf="forgotPasswordScreen"  style="min-height: 464px;" class="login-modal">        
+                <div class="d-flex align-items-center h-100  mob-column">
+                    <div class="col-md-5 login-left-area pt-4 pb-2">
+                        <div>
+                            <h3 class="text-white">Forget Password</h3>
+                            <p class="text-white">Don't worry you can change your password after validating your mail id.</p>
+                        </div>
+                        <div>
+                            <img src="assets/img/lgn-bnnr.png" class="lgn-bnnr"/>
+                        </div>
+                    </div>
+                    <div class="col-md-7 login-right-area pt-4 pb-2"> 
+                        <div class="login-two-start">
+                            <div *ngIf="forgetFirst">
+                                <p class="text-center text-muted mt-1 mb-3 font-14">Enter your email address</p>
+                                <div class="login-two-inputs mt-4">
+                                    <input type="text" placeholder="Email" [(ngModel)]="email"/> 
+                                    <i class="fal fa-envelope"></i>
+                                </div>
+                                
+                                <div class="login-two-inputs mt-5 text-center d-flex">
+                                    <button [disabled]="!(email)" class="btn sm btn-outline-primary btn-login w-100 ml-3 mr-3" type="button" (click)="getForgotOTP()">
+                                        Request OTP
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div *ngIf="forgetSecond">
+                                <p class="text-center text-muted mt-1 mb-3 font-14">Please enter the OTP sent to <br><strong>{{email}}</strong></p>
+                                <div class="login-two-inputs mt-4">
+                                    <input type="text" placeholder="OTP" [(ngModel)]="otp" pattern="[0-9]+" onKeyPress="if(this.value.length==6) return false;"/> 
+                                    <i class="fal fa-shield-alt"></i>
+                                </div>
+
+                                <div class="login-two-inputs mt-4">
+                                    <input type="password" placeholder="New Password" [(ngModel)]="password"/> 
+                                    <i class="fal fa-envelope"></i>
+                                </div>
+
+                                <div class="login-two-inputs mt-4">
+                                    <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmpassword"/> 
+                                    <i class="fal fa-envelope"></i>
+                                </div>
+                                
+                                <div class="login-two-inputs mt-5 text-center d-flex">
+                                    <button [disabled]="!(otp && password && confirmpassword && (password == confirmpassword))" class="btn sm btn-outline-primary btn-login w-100 ml-3 mr-3" type="button" (click)="changePassword()">
+                                        Change Password
+                                    </button>
+                                </div>
+                                <div class="mt-4 text-center font-12 strong">
+                                    <p class="default-text">Change Email Address? <a (click)="showForgotFirst();" href="javascript:void(0)" class="text-primary"> Click Here</a></p>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 text-center font-12 strong">
+                                <a (click)="showLogin()" class="text-primary" style="cursor: pointer;">Back to login</a>
+                                <p class="default-text">New to Active Print? <a (click)="showSignUp();" href="javascript:void(0)" class="text-primary">Create an account</a></p>
+                            </div>
+                            
+                        </div>
+
+                       
+                    </div>
+                </div>
+            </div>
+            <!-- Signup Screen -->
+            <div *ngIf="signupScreen"  style="min-height: 464px;" class="login-modal">        
+                <div class="d-flex align-items-center h-100 mob-column">
+                    <div class="col-md-5 login-left-area pt-4 pb-2">
+                        <div>
+                            <h3 class="text-white">Sign up</h3>
+                            <p class="text-white">Create a new account with your email id to get started</p>
+                        </div>
+                        <div>
+                            <img src="assets/img/lgn-bnnr.png" class="lgn-bnnr"/>
+                        </div>
+                    </div>
+                    <div class="col-md-7 login-right-area pt-4 pb-2"> 
+                        <div class="login-two-start">
+                            <div *ngIf="signUpFirst">
+                                <p class="text-center text-muted mt-1 mb-3 font-14">Create an account</p>
+                                <div class="login-two-inputs mt-2">
+                                    <i class="fal fa-user-alt"></i> 
+                                    <div style="display: flex;padding-right: 15px;">
+                                        <input type="text" placeholder="First Name" [(ngModel)]="fname"/>
+                                        <input type="text" placeholder="Last Name" [(ngModel)]="lname"/>
+                                    </div>
+                                </div>
+                                <div class="login-two-inputs mt-4">
+                                    <input type="text" placeholder="Email" [(ngModel)]="email"/> 
+                                    <i class="fal fa-envelope"></i>
+                                </div>
+                                <div class="login-two-inputs mt-4">
+                                    <input type="password" placeholder="Password" [(ngModel)]="password"/> 
+                                    <i class="fal fa-lock"></i>
+                                </div>
+                                <div class="login-two-inputs mt-4">
+                                    <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmpassword"/>
+                                    <i class="fal fa-lock"></i> 
+                                </div>
+                                
+                                <div class="login-two-inputs mt-5 text-center d-flex">
+                                    <button [disabled]="!(email && password)" class="btn sm btn-outline-primary btn-login w-100 ml-3 mr-3" type="button" (click)="signup()">
+                                        Request OTP
+                                    </button>
+                                </div>
+                            </div>
+                            <div *ngIf="signUpSecond">
+                                <p class="text-center text-muted mt-1 mb-3 font-14">Please enter the OTP sent to <br><strong>{{email}}</strong></p>
+                                <div class="login-two-inputs mt-4">
+                                    <input type="text" placeholder="OTP" [(ngModel)]="otp" pattern="[0-9]+" onKeyPress="if(this.value.length==6) return false;"/> 
+                                    <i class="fal fa-shield-alt"></i>
+                                </div>
+                                
+                                <div class="login-two-inputs mt-5 text-center d-flex">
+                                    <button [disabled]="!(otp)" class="btn sm btn-outline-primary btn-login w-100 ml-3 mr-3" type="button" (click)="finalSignup()">
+                                        Signup
+                                    </button>
+                                </div>
+                                <div class="mt-4 text-center font-12 strong">
+                                    <p class="default-text">Change Email Address? <a (click)="showSignUpFirst();" href="javascript:void(0)" class="text-primary"> Click Here</a></p>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-center font-12 strong">
+                                <p class="default-text">Already have an account? <a (click)="showLogin();" href="javascript:void(0)" class="text-primary">Login</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LOGIN MODAL ENDS -->
+
+
+    
+    
+
+    
+</ng-container>
+
+
+
+
+<ng-container *ngIf="!globals.validateTokenCallComplete">
+    <p class="all-loader">
+      <img src="assets/img/spinners.svg" style="height:50px"/>
+    </p>
+</ng-container>
+
+<ng-container *ngIf="showNewsletter">
+    <div class="full-modal fadeIn newsletter-modal" [@leaveAnimation] style="padding-top: 12%;">
+        <div class="position-relative">
+            <div class="close-icon-wrapper">
+                <a (click)="closeNewsletter();" class="login-close-butn text-white pointer"><i class="fal fa-times"></i></a>
+            </div>
+            <div class="newsletter-modal-wrapper">
+                <span class="icon-news"><i class="far fa-envelope"></i></span>
+                <p class="first-news">Newsletter and get updates</p>
+                <p class="second-news">Signup for newsletter to get up-to-date from us</p>
+                <input class="form-control" type="text" placeholder="Enter your name" style="margin-bottom: 20px;margin-top: 10px;" [(ngModel)]="newsletterName" />
+                <span *ngIf="newsletterName && !(newsletterName.length > 4)" class="input-error fadeIn" title="Minimum 5 characters required">
+                  <i class="fas fa-exclamation-circle"></i>
+                </span>
+                <input class="form-control" type="text" placeholder="Enter your email address" style="margin-bottom: 30px;margin-top: 0px;" [(ngModel)]="newsletterEmail" />
+                <span *ngIf="newsletterEmail && !(emailRegex.test(newsletterEmail.toLowerCase()))" class="input-error fadeIn" title="Invail email">
+                  <i class="fas fa-exclamation-circle"></i>
+                </span>
+                <button class="subscribe-button" [ngStyle]="!(newsletterEmail && emailRegex.test(newsletterEmail.toLowerCase()) && newsletterName && newsletterName.length > 4) ? {opacity:  0.5, cursor: 'not-allowed'} : {}" [disabled]="!(newsletterEmail && emailRegex.test(newsletterEmail.toLowerCase()) && newsletterName && newsletterName.length > 4)" (click)="subscribeNewsletter()">Subscribe Now</button>
+                <!-- <p class="later-news" (click)="closeNewsletter()">Later</p> -->
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<div *ngIf="globals.viewingDesign" class="full-modal fadeIn" [@leaveAnimation] style="padding-top: 0px;z-index: 99;">
+  <app-view-design></app-view-design>
+</div>
+
+
+
+
+
+
+  

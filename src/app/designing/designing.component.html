@@ -1,0 +1,139 @@
+<section class="main-designing-wrapper">
+    <div class="goback-modal" *ngIf="openedTab == 'browse' && selectedTemplate" (click)="selectedTemplate=null">
+        <p><i class="far fa-arrow-left mr-2"></i>Browse Designs</p>
+    </div>
+    <span class="close-modal" (click)="closeModal()">
+        <i class="far fa-times"></i>
+    </span>
+    <div class="modal-header p-0">
+        <div class="browse-designs">
+            <p *ngIf="!selectedTemplate" class="tab-heading-option" [ngClass]="{'active':openedTab == 'browse'}" (click)="openTab('browse')">Browse Designs</p>
+            <p *ngIf="selectedTemplate" class="tab-heading-option" [ngClass]="{'active':openedTab == 'browse'}" (click)="openTab('browse')">Edit Design</p>
+            <p class="tab-heading-option" [ngClass]="{'active':openedTab == 'upload'}" (click)="openTab('upload')">Upload Your design</p>
+        </div>
+    </div>
+    <div class="designing-modal-body-wrapper">
+        <!-- BROWSE TAB -->
+        <ng-container *ngIf="openedTab == 'browse'">
+            <!-- BROWSE Template -->
+            <ng-container *ngIf="!selectedTemplate">
+            <div class="designing-modal-body-container fadeIn">
+                <!-- Skeleton Loading Starts -->
+                <ng-container *ngIf="skeletonLoading">
+                  <div class="col-md-3" *ngFor="let el of [1,2,3,4]">
+                      <h1 class="product-name skeleton-loading dark" style="width: 40%; height: 21px;"></h1>
+                      <div class="product-meta skeleton-loading dark" style="width: 100%; height: 100px;"></div>
+                  </div>
+                </ng-container>
+                <!-- Skeleton Loading Ends -->
+                <div class="col-md-3" *ngFor="let template of templates">
+                    <p class="template-name">{{template.name}}</p>
+                    <div class="single-designing-template">
+                        <img class="template-image" [src]="template.images[0].regular" />
+                        <div class="edit-btn-container">
+                            <span class="template-edit" (click)="selectedTemplate=template;setTemplateFormValidated();"><i class="far fa-check"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </ng-container>
+            <!-- Start Designing -->
+            <ng-container *ngIf="selectedTemplate">
+                <div class="designing-modal-body-container p-0 fadeIn">
+                    <div class="sd-left-area">
+                        <!-- <div class="sd-header-section">
+                            <span [ngClass]="{'active fadeIn':openedDesigningTab == 'Text'}" (click)="openDesigningTab('Text')"><i class="far fa-text mr-2"></i> Text</span>
+                            <span [ngClass]="{'active fadeIn':openedDesigningTab == 'Images'}" (click)="openDesigningTab('Images')"><i class="far fa-image mr-2"></i> Images</span>
+                        </div> -->
+                        <div class="sd-content-section">
+                            <ng-container *ngIf="openedDesigningTab == 'Text'">
+                                <div class="sd-input-wrapper" *ngFor="let field of selectedTemplate.fields">
+                                  <ng-container *ngIf="field.type =='Text'">
+                                    <span>{{field.name}}</span>
+                                    <input class="sd-input" [(ngModel)]="field.value" (keyup)="setTemplateFormValidated()" />
+                                  </ng-container>
+
+                                  <ng-container *ngIf="field.type =='Image'">
+                                    <span class="image-placeholder">Select {{field.name}}</span>
+                                    <input type="file" style="display: none;" #fileInput (change)="onFileSelected($event, field._id)" accept="image/png, image/jpeg">
+                                    <div *ngIf="!field.selectedFile" class="file-div upload-logo" (click)="selectFile(field._id)">
+                                        Upload image
+                                    </div>
+                                    <div *ngIf="field.selectedFile" class="file-div upload-logo">
+                                        <div class="file-container">
+                                            <ng-container *ngIf="field.selectedFile.type == 'image/png' || field.selectedFile.type == 'image/jpeg'">
+                                                <img id="blah" [src]="field.selectedFileData" alt="your image" style="width: 140px;margin: 10px 10px 0px;"/>
+                                            </ng-container>
+                                            <span (click)="removeFile(field._id)" class="file-remove">
+                                                <i class="far fa-times" title="Remove File"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                  </ng-container>
+                                  
+                                </div>
+                             </ng-container>
+                            <ng-container *ngIf="openedDesigningTab == 'Images'">
+                                
+                            </ng-container>
+                        </div>
+                        <div class="sd-footer-section">
+                            <!-- <button class="sd-preview"><i class="far fa-sync mr-2"></i>Preview</button> -->
+                            <button [disabled]="!templateFormValidated || addingToCart" (click)="addToCart()" class="sd-btn-cart ml-3"><i class="fal fa-shopping-cart mr-2"></i>Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="sd-right-area">
+                        <div class="sd-content-wrapper">
+                            <img [src]="selectedTemplate.images[this.imageIndex].regular" class="main-sd-image"/>
+                            <div class="sd-image-container" *ngIf="selectedTemplate.type=='Double Sided'">
+                              <ng-container *ngFor="let image of selectedTemplate.images; let i = index">
+                                <img [src]="image.regular" class="sd-image-fb" [ngClass]="{'active':this.imageIndex == i}" (click)="setImage(i)"/>
+                              </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+
+        <!-- UPLOAD YOUR DESIGN -->
+        <ng-container *ngIf="openedTab == 'upload'">
+            <div class="designing-modal-body-container-upload">
+
+                <input type="file" style="display: none;" #designInput (change)="onDesignSelected($event)" accept="image/png, image/jpeg">
+                <div *ngIf="!selectedDesign" class="file-div" (click)="designInput.click()">
+                    Click here to upload a file
+                </div>
+                <div *ngIf="selectedDesign" class="file-div">
+                    <div class="file-container">
+                        <ng-container *ngIf="selectedDesign.type == 'image/png' || selectedDesign.type == 'image/jpeg'">
+                            <img id="blah" [src]="selectedDesignData" alt="your image" style="width: 140px;    margin: 10px 10px 0px;"/>
+                        </ng-container>
+                        <p class="file-name">{{selectedDesign.name}}</p>
+                        <span (click)="removeDesign()" class="file-remove">
+                            <i class="far fa-times" title="Remove File"></i>
+                        </span>
+                    </div>
+
+                    <ng-container *ngIf="startDesigningProductCustomDesignCharge > 0">
+                        <p *ngIf="selectedDesign.type == 'image/png' || selectedDesign.type == 'image/jpeg'" class="extra-msg flash">It seems like you have uploaded an image instead of a designing file (eps, ai, cdr, psd). So, we have to create that design in the respective format, for that extra <strong class="text-primary">₹{{startDesigningProductCustomDesignCharge}}</strong> will be added to the final billing amount.</p>
+                    </ng-container>
+                    
+                </div>
+
+                <p class="note-msg">Please upload jpg, jpeg, png, eps, ai, cdr, psd images only (Artwork should be minimum 300 dpi). File should not be larger than 100MB in size.</p>
+
+                <div class="text-center fadeInUp">
+                    <button [disabled]="!uploadFormValidated || addingToCart" (click)="addToCart()" class="btn-product btn-cart ml-3"><i class="fal fa-shopping-cart mr-2"></i>Add to Cart</button>
+                </div>
+            </div>
+            
+        </ng-container>
+    </div>
+    <!-- <div class="modal-footer">
+        <div>
+            <button *ngIf="auth.isLoggedIn" (click)="addToCart()" class="btn-product btn-cart ml-3"><i class="fal fa-shopping-cart mr-2"></i>Add to Cart</button>
+            <button *ngIf="!auth.isLoggedIn" (click)="globals.openLoginModal();" class="btn-product btn-cart ml-3"><i class="fal fa-shopping-cart mr-2"></i>Add to Cart</button>
+        </div>
+    </div> -->
+</section>

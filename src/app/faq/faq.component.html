@@ -1,0 +1,34 @@
+<div class="main-page-section">
+  <div class="container-fluid">
+    <div class="col-md-12 mb-5">
+      <p style="margin-top: 60px;margin-bottom: 20px;font-size: 40px;line-height: 1.125;color: #810000;">FAQs</p>
+      <!-- FAQ AREA -->
+      <div class="fadeIn faq mt-5" >
+        <div class="tab-content">
+          <div class="accordion" id="accordionExample">
+
+            <div class="card" *ngFor="let item of faqs; let i = index">
+                <div class="card-header" [id]="'fqheading'+i">
+                    <div class="mb-0 collapsed" data-toggle="collapse" role="navigation" [attr.data-target]="'#fqcollapse'+i" aria-expanded="false" [attr.aria-controls]="'fqcollapse'+i">
+                        <!-- <span class="round-dot"></span> -->
+                        <span class="faq-q-title">{{item.question}}</span>
+                        <div class="faq-arrow-container">
+                            <i class="far fa-angle-up"></i>
+                        </div>
+                    </div>
+                </div>
+                <div [id]="'fqcollapse'+i" class="collapse" [attr.aria-labelledby]="'fqheading'+i" data-parent="#accordionExample" style="">
+                    <div class="card-body">
+                        <p>{{item.answer}}</p>
+                    </div>
+                </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+          
+  </div>
+
+</div>

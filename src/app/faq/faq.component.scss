@@ -1,0 +1,117 @@
+// FAQ
+.faq .nav-pills li.nav-item a{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 22px 20px;
+  box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.08);
+  width: 219px;
+  border-radius: 7px;
+  border: 2px solid #dbe9ff;
+  font-size: 16px;
+  font-weight: 700;
+  transition: all ease 0.4s;
+}
+.faq .nav-pills li.nav-item a.active {
+  border: 2px solid #2262c6;
+  transition: all ease 0.4s;
+  color: #2262c6;
+}
+.faq .nav-pills li.nav-item a i {
+  font-size: 32px;
+  color: #b5b5b5;
+  transition: all ease 0.4s;
+}
+.faq .nav-pills li.nav-item a.active i {
+  font-size: 32px;
+  color: #2262c6;
+  transition: all ease 0.4s;
+}
+.faq .tab-content .accordion .card {
+  border: 0px;
+  margin-bottom: 26px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.faq .tab-content .accordion .card .card-header {
+  padding: 0;
+  border: none;
+  background: none;
+}
+.faq .tab-content .accordion .card .card-header > div {
+  padding: 13px 21px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #aa2b1d;
+  display: flex;
+  align-items: center;
+}
+.faq .tab-content .accordion .card .card-header div .faq-q-title {
+  font-size: 14px;
+  color: #aa2b1d;
+  font-weight: 700;
+  flex: 1;
+}
+.faq .tab-content .accordion .card .card-header .faq-arrow-container {
+  flex: 1;
+  text-align: right;
+}
+.faq .tab-content .accordion .card .card-header span.round-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #2665c8;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+.faq .tab-content .accordion .card .card-header div.collapsed .faq-arrow-container i {
+  transform: rotate(180deg);
+  transition: all ease 0.4s;
+}
+.faq .tab-content .accordion .card .card-header div .faq-arrow-container i {
+  transition: all ease 0.4s;
+}
+.faq-footer {
+  background: #2566cb;
+  padding: 12px 40px;
+}
+.faq-footer p {
+  margin: 0px;
+  color: #fff;
+  letter-spacing: 0px;
+  font-size: 12px;
+}
+.faq-footer p a{
+  color: #fff;
+}
+.arrow {
+  cursor: pointer;
+  position: fixed;
+  bottom: 25px;
+  right: 10px;
+  background: #2566cb;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 25px;
+  color: #fff;
+}
+.faq .card {
+  background-color: #f8eeed;
+}
+.faq .card-body p {
+  margin: 0px;
+  font-size: 13px;
+  white-space: pre-line;
+  font-weight: 500;
+}
+
+
+
+
+
+// FAQ ENDS

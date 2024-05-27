@@ -1,0 +1,14 @@
+.payment-btn {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dedede;
+    border-radius: 10px;
+}
+.payment-btn.active {
+    background-color: #ffedeb;
+    color: #aa2b1d;
+    border-color: #aa2b1d;
+    font-weight: 500;
+}

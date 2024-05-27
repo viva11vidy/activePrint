@@ -1,0 +1,789 @@
+<ngx-loading-bar color="#ff8b8b" includeSpinner="false" height="3px"></ngx-loading-bar>
+<section class="main-product-wrapper" [ngClass]="{'mobile-view':onlymobile}">
+
+
+    <!-- MOBILE SECTION -->
+    <div class="float-text">
+        <p class="title" *ngIf="aboutProfileDiv">Account Info</p>
+        <p class="title" *ngIf="myOrdersDiv">My Orders</p>
+        <p class="title" *ngIf="orderDetailsDiv">My Orders</p>
+        <p class="title" *ngIf="chatDiv">Support Chat</p>
+        <p class="title" *ngIf="addressDiv">Addresses</p>
+        <p class="title" *ngIf="wishlistDiv">Wishlist</p>
+        <p class="title" *ngIf="editProfileDiv">Edit Profile</p>
+        <p class="title" *ngIf="changePasswordDiv">Change Password</p>
+        <p class="title" *ngIf="customerCareDiv">Get in Touch</p>
+        <span class="so" (click)="toggleOnlyMobileSection();">Show Other</span>
+    </div>
+    <!-- MOBILE SECTION ENDS -->
+
+    <div class="backdrop" (click)="toggleOnlyMobileSection()"></div>
+
+    <div class="page-header container-fluid px-3" style="background-image: url('assets/img/visitng-card-banner.jpg'); background-color: #1f0006;">
+        <ng-container>
+            <h1 class="page-title fadeIn">My Account</h1>
+            <ul class="breadcrumb fadeIn">
+                <li><a href="" routerLink="/home"><i class="fas fa-home"></i></a></li>
+                <li class="delimiter">/</li>
+                <li>My Account</li>
+            </ul>
+        </ng-container>
+    </div>
+   <!-- Profile Top -->
+    <div class="container-fluid px-4" >
+        <div class="row">
+            <div class="col-md-4 col-lg-3 col-xl-3">
+                <div class="profile-info-own student-profile-top">
+                    <img class="image" style="border-radius: 50%;" height="50px" width="50px" [src]="auth.user.profile_picture">
+                    <div class="DxGiT2">
+                        <div class="hello">Hello,</div>
+                        <div class="name">{{auth.user.name}}</div>
+                    </div>
+                </div>
+                <div class="profile-options">
+                    <div class="single-option" [ngClass]="{'active': active == 'aboutProfileDiv' }" routerLink="/my-account/info">
+                        <div class="step-count">
+                            <span class="step-number"><i class="fad fa-user"></i></span>Account Info
+                        </div>
+                    </div>
+                    <div class="single-option" [ngClass]="{'active': active == 'My Orders' }" routerLink="/my-account/orders">
+                        <div class="step-count">
+                            <span class="step-number"><i class="fad fa-box-open"></i></span>My Orders
+                        </div>
+                    </div>
+                    <div class="single-option" [ngClass]="{'active': active == 'Wishlist' }" routerLink="/my-account/wishlist">
+                        <div class="step-count">
+                            <span class="step-number"><i class="fad fa-heart"></i></span>Wishlist
+                        </div>
+                    </div>
+                    <div class="single-option" [ngClass]="{'active': active == 'Addresses' }" routerLink="/my-account/manage-addresses">
+                        <div class="step-count">
+                            <span class="step-number"><i class="fad fa-list"></i></span>Addresses
+                        </div>
+                    </div>
+                    <div class="single-option" [ngClass]="{'active': active == 'Change Password' }" routerLink="/my-account/change-password">
+                        <div class="step-count">
+                            <span class="step-number"><i class="fad fa-lock-alt"></i></span>Change Password
+                        </div>
+                    </div>
+                    <div class="single-option" [ngClass]="{'active': active == 'Customer Care' }" routerLink="/my-account/customer-care">
+                        <div class="step-count">
+                            <span class="step-number"><i class="fad fa-question-circle"></i></span>Customer Care
+                        </div>
+                    </div>
+                    <div class="single-option" [ngClass]="{'active': active == 'Support Chat' }" routerLink="/my-account/support-chat">
+                        <div class="step-count">
+                            <span class="step-number"><i class="fad fa-comment-alt"></i></span>Support Chat
+                        </div>
+                    </div>
+                    <div class="single-option" (click)="auth.logout()">
+                        <div class="step-count">
+                            <span class="step-number"><i class="fad fa-sign-out-alt"></i></span>Logout
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accounts col-md-8 col-lg-9 col-xl-9">
+                <div class="student-profile-botton">
+                    <!-- About -->
+                    <div class="profile-info-section fadeIn" *ngIf="aboutProfileDiv">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <p class="profile-section-heading">My Information</p>
+                            <a (click)="editProfile()" class="nav-link btn-primary text-white rounded px-4" style="cursor: pointer;">Edit</a>
+                        </div>
+                        <div class="profile-information">
+                            <div class="profile-information-div">
+                                <p class="profile-option">Name:</p>
+                                <p class="profile-option-desc">{{auth.user.name}}</p>
+                            </div>
+                            <div class="profile-information-div">
+                                <p class="profile-option">Email ID:</p>
+                                <p class="profile-option-desc">{{auth.user.email}}</p>
+                            </div>
+                            <div class="profile-information-div">
+                                <p class="profile-option">Gender:</p>
+                                <p class="profile-option-desc">{{auth.user.gender}}</p>
+                            </div>
+                            <div class="profile-information-div" *ngIf="dob">
+                                <p class="profile-option">Member Since:</p>
+                                <p class="profile-option-desc">{{auth.user.created | date: 'MMM d, y'}}</p>
+                            </div>
+                            <div class="profile-information-div" *ngIf="dob">
+                                <p class="profile-option">Date of Birth:</p>
+                                <p class="profile-option-desc">{{dob | date: 'MMM d, y'}}</p>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- My Orders -->
+                    <ng-container *ngIf="myOrdersDiv">
+                        <div class="profile-info-section fadeIn"  >
+                            <div style="margin-bottom: 30px;">
+                                <p class="profile-section-heading">My Orders</p>
+                            </div>
+                            <div class="profile-information" >
+                                <!-- ORDER SKELETON LOADER STARTS -->
+                                <ng-container *ngIf="orderSkeleton && !orders">
+                                    <div class="d-flex shop-table cart-table single-order mb-3">
+                                        <div class="col-md-4">
+                                            <div class="d-flex align-items-center">
+                                                <div>
+                                                    <div class="skeleton-loading dark" style="height: 100px;width: 100px;"></div>
+                                                </div>
+                                                <div class="product-name ml-4">
+                                                    <div class="skeleton-loading dark mb-2" style="width: 126px; height: 22px;"></div>
+                                                    <p class="skeleton-loading dark" style="width: 110px; height: 22px;"></p>
+                                                    <p class="skeleton-loading dark" style="width: 110px; height: 22px;"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 d-flex align-items-center justify-content-center flex-column">
+                                            <div class="skeleton-loading dark mb-2" style="width: 92px; height: 20px;"></div>
+                                            <div class="skeleton-loading dark" style="width: 92px; height: 20px;"></div>
+                                        </div>
+                                        <div class="col-md-3 d-flex align-items-center justify-content-center flex-column">
+                                            <div class="skeleton-loading dark" style="width: 92px; height: 20px;"></div>
+                                        </div>
+                                        <div class="col-md-3 d-flex align-items-center justify-content-center flex-column">
+                                            <div class="skeleton-loading dark" style="width: 100px; height: 40px;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex shop-table cart-table single-order mb-3">
+                                        <div class="col-md-4">
+                                            <div class="d-flex align-items-center">
+                                                <div>
+                                                    <div class="skeleton-loading dark" style="height: 100px;width: 100px;"></div>
+                                                </div>
+                                                <div class="product-name ml-4">
+                                                    <div class="skeleton-loading dark mb-2" style="width: 126px; height: 22px;"></div>
+                                                    <p class="skeleton-loading dark" style="width: 110px; height: 22px;"></p>
+                                                    <p class="skeleton-loading dark" style="width: 110px; height: 22px;"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 d-flex align-items-center justify-content-center flex-column">
+                                            <div class="skeleton-loading dark mb-2" style="width: 92px; height: 20px;"></div>
+                                            <div class="skeleton-loading dark" style="width: 92px; height: 20px;"></div>
+                                        </div>
+                                        <div class="col-md-3 d-flex align-items-center justify-content-center flex-column">
+                                            <div class="skeleton-loading dark" style="width: 92px; height: 20px;"></div>
+                                        </div>
+                                        <div class="col-md-3 d-flex align-items-center justify-content-center flex-column">
+                                            <div class="skeleton-loading dark" style="width: 100px; height: 40px;"></div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <!-- ORDER SKELETON LOADER ENDS -->
+                                <div *ngIf="orders && orders.length" class="mt-0">
+                                    <ng-container *ngFor="let order of orders; let i = index">
+                                    <ng-container *ngIf="order.order_items && order.order_items[0].product">
+                                        <div class="d-flex shop-table cart-table single-order mb-3">
+                                        <ng-container >
+                                            <div class="col-md-4">
+                                                <div class="d-flex align-items-center mob-al-start">
+                                                    <div class="text-center">
+                                                        <a style="cursor: pointer;" href="" [routerLink]="'/product/'+order.order_items[0].product.info.slug+'/'+order.order_items[0].product._id">
+                                                            <img [src]="order.order_items[0].product.info.images[0].thumb" width="100" height="100" alt="product">
+                                                        </a>
+                                                        <p *ngIf="order.order_items.length > 1"class="more-count">{{order.order_items.length - 1}} more item(s)</p>
+                                                        <a *ngIf="order.order_items[0].design" (click)="globals.viewingDesign=order.order_items[0].design" class="view-design"><i class="fas fa-image"></i> View Design</a>
+                                                    </div>
+                                                    <div class="product-name ml-4">
+                                                        <div class="product-name-section">
+                                                            <a style="cursor: pointer;" href="" [routerLink]="'/product/'+order.order_items[0].product.info.slug+'/'+order.order_items[0].product._id">{{order.order_items[0].product.info.name}}</a>
+                                                        </div>
+                                                        <p *ngFor="let variation of order.order_items[0].product_variation">{{variation.group}} : {{variation.property}}</p>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 d-flex align-items-center justify-content-center flex-column mob-mar">
+                                                <div class="product-quantity">
+                                                    <span class="amount">Quantity : {{order.order_items[0].qty}}</span>
+                                                </div>
+                                                <div class="product-price">
+                                                    <span class="amount">Total : ₹ {{order.order_items[0].final_price | number : '1.2-2'}}</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- <div class="col-md-3 d-flex align-items-center justify-content-center flex-column">
+                                                <div>
+                                                    <span class="success-round"></span>
+                                                    <span>Ordered on {{ order.created | date:'dd.MM.yyyy' }}</span>
+                                                </div>
+                                            </div> -->
+
+                                            <div class="col-md-3 d-flex align-items-center justify-content-center flex-column">
+                                              <div class="d-flex align-items-center justify-content-start w-100 mob-cen">
+                                                  <span [ngClass]="order.order_status != 'Cancelled' && order.order_status != 'Returned' && order.order_status != 'Refunded' ? 'success-round' : 'danger-round'"></span>
+                                                  <span *ngIf="order.order_status_logs && order.order_status_logs.length > 0" class="order-list-status-text">{{order.order_status_logs[order.order_status_logs.length - 1].status}} on {{ order.order_status_logs[order.order_status_logs.length - 1].created | date:'dd.MM.yyyy' }}</span>
+                                                  <span *ngIf="!(order.order_status_logs && order.order_status_logs.length > 0)" class="order-list-status-text">Ordered on {{ order.created | date:'dd.MM.yyyy' }}</span>
+                                              </div>
+                                            </div>
+
+                                            <div class="col-md-3 d-flex align-items-center justify-content-center flex-column mob-dtl-mar">
+                                                <a (click)="goToOrderDetail(i)" class="btn btn-primary text-white mn">Go to detail <i class="fal fa-arrow-right ml-3"></i></a>
+                                                
+                                            </div>
+                                        </ng-container>
+                                        </div>
+                                    </ng-container>
+                                    </ng-container>
+                                </div>
+                                <div *ngIf="orders && !orders.length" class="">
+                                    <p class="profile-option-desc">You haven't orderd anything yet</p>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <!-- Orders Details-->
+                    <div class="profile-info-section fadeIn" *ngIf="orderDetailsDiv">
+                        <a class="text-primary pointer" (click)="showMyOrders();"><i class="fal fa-arrow-left mr-3"></i>Back to orders</a>
+                        <div style="margin-bottom: 30px;" class="mt-3">
+                            <div class="order-results">
+                                <div class="overview-item">
+                                    <span>Order ID:</span>
+                                    <strong>{{orders[selectedOrderIndex].virtual_id ? orders[selectedOrderIndex].virtual_id : orders[selectedOrderIndex]._id}}</strong>
+                                </div>
+                                <div class="overview-item">
+                                    <span>Status:</span>
+                                    <strong [ngClass]="orders[selectedOrderIndex].order_status != 'Cancelled' && orders[selectedOrderIndex].order_status != 'Returned' && orders[selectedOrderIndex].order_status != 'Refunded' ? 'text-success' : 'text-danger'">{{orders[selectedOrderIndex].order_status}}</strong>
+                                </div>
+                                <div class="overview-item">
+                                    <span>Date:</span>
+                                    <strong>{{orders[selectedOrderIndex].created | date:'dd.MM.yyyy'}}</strong>
+                                </div>
+                                <div class="overview-item">
+                                    <span>Total:</span>
+                                    <strong>₹ {{orders[selectedOrderIndex].order_master.total_order_final_value | number : '1.2-2'}}</strong>
+                                </div>
+                                <div class="overview-item">
+                                    <span>Payment method:</span>
+                                    <strong>{{orders[selectedOrderIndex].payment_mode == 'Cash' ? 'Cash on delivery' : 'Online'}}</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-results step-header">
+
+                          <div *ngIf="orders[selectedOrderIndex].order_status_logs" class="step-container">
+                            <ng-container *ngFor="let log of orders[selectedOrderIndex].order_status_logs; let logIndex = index">
+                              <div class="step-single">
+                                  <div class="step-single-line" [ngClass]="{'active': (log.status != 'Cancelled' && log.status != 'Returned' && log.status != 'Refunded'), 'red': !(log.status != 'Cancelled' && log.status != 'Returned' && log.status != 'Refunded'), 'd-none': logIndex == orders[selectedOrderIndex].order_status_logs.length - 1}"></div>
+                                  <div class="step-dot" [ngClass]="{active: logIndex == orders[selectedOrderIndex].order_status_logs.length - 1, 'red': !(log.status != 'Cancelled' && log.status != 'Returned' && log.status != 'Refunded')}"></div>
+                                  <div class="single-step-container">
+                                      <p class="step-title">{{log.status}}</p>
+                                      <p class="step-time">{{log.created | date:'MMM d, y, h:mm a' }}</p>
+                                  </div>
+                              </div>
+                            </ng-container>
+                              
+                          </div>
+
+
+                          <div class="status-options-wrapper" *ngIf="orders[selectedOrderIndex].order_status == 'Placed' || orders[selectedOrderIndex].order_status == 'Confirmed' || orders[selectedOrderIndex].order_status == 'Ready to Ship' || orders[selectedOrderIndex].order_status == 'Shipped' || orders[selectedOrderIndex].order_status == 'Delivered'">
+                            <div *ngIf="orders[selectedOrderIndex].order_status == 'Placed' || orders[selectedOrderIndex].order_status == 'Confirmed' || orders[selectedOrderIndex].order_status == 'Ready to Ship' || orders[selectedOrderIndex].order_status == 'Shipped'">
+                              <p class="tp-title text-warning">Ordered by mistake ?</p>
+                              <p class="tp-sub-title">You can cancel within 24 hrs</p>
+                            </div>  
+                            <div *ngIf="orders[selectedOrderIndex].order_status == 'Delivered'">
+                                  <p class="tp-title">Your item(s) has been successfully delivered</p>
+                                  <p class="tp-sub-title">Note: You have 7 days from delivered date for return/refund</p>
+                              </div>
+                              <div class="d-flex align-items-center">
+                                  <a *ngIf="orders[selectedOrderIndex].order_status == 'Placed' || orders[selectedOrderIndex].order_status == 'Confirmed' || orders[selectedOrderIndex].order_status == 'Ready to Ship' || orders[selectedOrderIndex].order_status == 'Shipped'" class="btn btn-primary text-white ds-btn-black" (click)="openCancelPopup()">Cancel Order</a>
+                                  <a *ngIf="orders[selectedOrderIndex].order_status == 'Delivered'" class="btn btn-primary text-white" (click)="openCancelPopup()">Return Item</a>
+                              </div>
+                          </div>
+                      </div>
+
+
+
+
+                        <div class="order-results step-header cancel-wrapper" *ngIf="orders[selectedOrderIndex].order_status == 'Placed' && orders[selectedOrderIndex].payment_mode == 'Online' && orders[selectedOrderIndex].payment_status != 'Success'">
+                            <div class="status-options-wrapper mt-0 bt-0 pt-0">
+                                <div>
+                                    <p class="tp-title">Your payment attempt was unsuccessfull</p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <a class="btn btn-primary text-white" (click)="goToPaymentPage(orders[selectedOrderIndex]._id)">Retry Payment</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="order-results step-header">
+                            <div class="status-options-wrapper mt-0 bt-0 pt-0">
+                                <div>
+                                    <p class="tp-title text-dark"><i class="fas fa-money-check-alt mr-2"></i> Payment Method</p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <a class="text-muted" style="font-size: 14px;">
+                                      {{orders[selectedOrderIndex].payment_mode == 'Cash' ? 'Cash on Delivery' : 'Online Payment'}}
+                                        <ng-container *ngIf="orders[selectedOrderIndex].payment_mode == 'Online'">
+                                          <span [ngClass]="orders[selectedOrderIndex].payment_status == 'Success' ? 'badge-success' : 'badge-danger'" class="badge ml-2" style="font-weight: 500;">{{orders[selectedOrderIndex].payment_status}}</span>
+                                        </ng-container>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile-information" >
+                            <div class="mt-0">
+
+                              <div class="d-flex shop-table cart-table single-order mb-3" *ngFor="let orderItem of orders[selectedOrderIndex].order_items; let orderItemIndex = index">
+                                    <div class="col-md-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-center">
+                                                <a style="cursor: pointer;" href="" [routerLink]="'/product/'+orderItem.product.info.slug+'/'+orderItem.product._id">
+                                                    <img [src]="orderItem.product.info.images[0].thumb" width="100" height="100" alt="product">
+                                                </a>
+                                                <a *ngIf="orderItem.design" (click)="globals.viewingDesign=orderItem.design"class="view-design"><i class="fas fa-image"></i> View Design</a>
+                                            </div>
+                                            <div class="product-name ml-4">
+                                                <div class="product-name-section">
+                                                    <a style="cursor: pointer;" href="" [routerLink]="'/product/'+orderItem.product.info.slug+'/'+orderItem.product._id">{{orderItem.product.info.name}}</a>
+                                                </div>
+                                                <p *ngFor="let variation of orderItem.product_variation">{{variation.group}} : {{variation.property}}</p>
+                                                <!-- <p *ngIf="orderItem.design" (click)="globals.viewingDesign=orderItem.design">View Design</p> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-center justify-content-center flex-column mob-mar">
+                                        <div class="product-quantity">
+                                            <span class="amount">Quantity : {{orderItem.qty}}</span>
+                                        </div>
+                                        <div class="product-price">
+                                            <span class="amount">Total : ₹ {{orderItem.final_price | number : '1.2-2'}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-center justify-content-center flex-column">
+                                        <div>
+                                            <span class="success-round"></span>
+                                            <span>Ordered on {{orderItem.created | date:'dd.MM.yyyy'}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-center justify-content-center flex-column mob-dtl-mar">
+                                        <a *ngIf="!orderItem.comments.length" (click)="selectedOrderItemIndex=orderItemIndex;" class="rate-review mb-2">
+                                            <i class="fas fa-star"></i> Rate & Review
+                                        </a>
+                                        <div class="text-center" *ngIf="orderItem.comments.length">
+                                            <span class="view-rate">
+                                                <i [ngClass]="orderItem.comments[0].rate >= 1 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+                                                <i [ngClass]="orderItem.comments[0].rate >= 2 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+                                                <i [ngClass]="orderItem.comments[0].rate >= 3 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+                                                <i [ngClass]="orderItem.comments[0].rate >= 4 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+                                                <i [ngClass]="orderItem.comments[0].rate >= 5 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+                                            </span>
+                                            <a class="sr" (click)="selectedOrderItemIndex=orderItemIndex;">Show Review</a>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="cart-right-area mb-4">
+                                    <div class="cl-header">
+                                        <p>Order Summary</p>
+                                    </div>
+                                    
+                                    <div class="cl-body">
+                                        <table class="shop-table amount-table cart-table mt-0">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="product-subtotal border-0">
+                                                        <span class="amount">Item Total</span>
+                                                    </td>
+                                                    <td class="product-price border-0 text-right">
+                                                        <span class="amount">₹ {{orders[selectedOrderIndex].order_master.total_order_price - orders[selectedOrderIndex].order_master.total_order_disc | number : '1.2-2'}}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="orders[selectedOrderIndex].order_master.total_delivery_charge > 0">
+                                                    <td class="product-subtotal border-0">
+                                                        <span class="amount">Delivery Charges</span>
+                                                    </td>
+
+                                                    <td class="product-price border-0 text-right">
+                                                        <span *ngIf="(orders[selectedOrderIndex].order_master.total_delivery_charge - (orders[selectedOrderIndex].order_master.total_delivery_discount ? orders[selectedOrderIndex].order_master.total_delivery_discount : 0) ) != 0" class="amount">₹ {{orders[selectedOrderIndex].order_master.total_delivery_charge | number : '1.2-2'}}</span>
+
+                                                        <span style="color: #009688;" *ngIf="(orders[selectedOrderIndex].order_master.total_delivery_charge - (orders[selectedOrderIndex].order_master.total_delivery_discount ? orders[selectedOrderIndex].order_master.total_delivery_discount : 0)) == 0" class="amount">Free</span>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="orders[selectedOrderIndex].order_master.total_custom_design_charge > 0">
+                                                    <td class="product-subtotal border-0">
+                                                        <span class="amount">Custom Design Charges</span>
+                                                    </td>
+                                                    <td class="product-price border-0 text-right">
+                                                        <span class="amount">₹ {{orders[selectedOrderIndex].order_master.total_custom_design_charge | number : '1.2-2'}}</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="product-subtotal">
+                                                        <span class="amount">Order Total</span>
+                                                    </td>
+                                                    <td class="product-price text-right">
+                                                        <span class="amount">₹ {{orders[selectedOrderIndex].order_master.total_order_final_value | number : '1.2-2'}}</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <hr *ngIf="orders[selectedOrderIndex].order_master.total_order_disc > 0" style="margin: 5px 0px 20px;border-top: 1px solid #e1e1e1;">
+                                        <p *ngIf="orders[selectedOrderIndex].order_master.total_order_disc > 0" class="text-success text-center">Your Total Savings on this order ₹ {{orders[selectedOrderIndex].order_master.total_order_disc | number : '1.2-2'}}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="cart-right-area mb-4">
+                                    <div class="cl-header">
+                                        <p>Delivery Address</p>
+                                        <!-- <p class="item-count">Total Item 3</p> -->
+                                    </div>
+                                    <div class="cl-body py-4">
+                                        <p class="dt">{{orders[selectedOrderIndex].shipping_address.full_name}} <span class="address-type">{{orders[selectedOrderIndex].shipping_address.is_home_address ? 'Home' : 'Office'}}</span></p>
+                                        <p class="dt">{{orders[selectedOrderIndex].shipping_address.phone_number_1}}</p>
+                                        <p>{{orders[selectedOrderIndex].shipping_address.address1}} <br />
+                                          <span *ngIf="orders[selectedOrderIndex].shipping_address.address2" class="main-address">{{orders[selectedOrderIndex].shipping_address.address2}}</span> <br />
+                                          {{orders[selectedOrderIndex].shipping_address.city}}, {{orders[selectedOrderIndex].shipping_address.state}} <br />
+                                          Pincode: {{orders[selectedOrderIndex].shipping_address.zipcode}} <br /></p>
+                                        <hr style="margin: 5px 0px 20px;border-top: 1px solid #e1e1e1;"> <br />
+                                        <p class="text-success mb-0">More Information has been sent to <strong>{{auth.user.email}}</strong> <br />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="cart-right-area">
+                                    <div class="cl-header">
+                                        <p>Need Help ?</p>
+                                    </div>
+                                    <div class="cl-body py-4">
+                                        <p>Connect with us : <strong>{{globals.settings.customerSupportContactNumber}}</strong></p>
+                                        <p>Call Us : <strong>{{globals.settings.customerSupportEmail}}</strong></p>
+                                        <hr style="margin: 5px 0px 20px;border-top: 1px solid #e1e1e1;">
+                                        <a class="btn btn-primary text-white" style="font-size: 15px;margin-bottom: 10px;" routerLink="/my-account/customer-care">
+                                            <i class="fal fa-user-headset mr-3"></i>Customer care
+                                        </a>
+                                        <a class="btn btn-primary text-white" style="font-size: 15px;" routerLink="/my-account/support-chat">
+                                          <i class="fal fa-user-headset mr-3"></i>Support Chat
+                                      </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Support Chat-->
+                    <div class="profile-info-section fadeIn" *ngIf="chatDiv">
+
+                      <app-support-chat></app-support-chat>
+
+                        
+                       
+                    </div>
+                
+                    <!-- Wishlist -->
+                    <div class="profile-info-section fadeIn" *ngIf="wishlistDiv">
+                        <div style="margin-bottom: 30px;">
+                        <p class="profile-section-heading">Wishlist</p>
+                        </div>
+                        <div class="profile-information">
+                            <!-- WISHLIST SKELETON START -->
+                            <ng-container *ngIf="wishlistSkeleton && !wishlistItems">
+                                <div class="dash-table student-table listing-table row">
+                                    <div class="col-md-3" >
+                                        <div class="product-one">
+                                            <div class="product-top skeleton-loading dark" style="width: 205px;height: 260px;"></div>
+                                            <div class="product-bottom">
+                                                <p class="product-name skeleton-loading dark" style="width: 180px;height: 25px;"></p>
+                                                <p class="product-name skeleton-loading dark" style="width: 150px;height: 20px;"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" >
+                                        <div class="product-one">
+                                            <div class="product-top skeleton-loading dark" style="width: 205px;height: 260px;"></div>
+                                            <div class="product-bottom">
+                                                <p class="product-name skeleton-loading dark" style="width: 180px;height: 25px;"></p>
+                                                <p class="product-name skeleton-loading dark" style="width: 150px;height: 20px;"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" >
+                                        <div class="product-one">
+                                            <div class="product-top skeleton-loading dark" style="width: 205px;height: 260px;"></div>
+                                            <div class="product-bottom">
+                                                <p class="product-name skeleton-loading dark" style="width: 180px;height: 25px;"></p>
+                                                <p class="product-name skeleton-loading dark" style="width: 150px;height: 20px;"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <!-- WISHLIST SKELETON ENDS -->
+                            <div *ngIf="wishlistItems && wishlistItems.length" class="dash-table student-table listing-table row">
+                                <div class="col-md-3" *ngFor="let wishlistItem of wishlistItems; let i = index">
+                                    <div class="product-one">
+                                        <div class="product-top">
+                                            <div class="product-options-cw" (click)="addToWishlist(wishlistItem.product[0]._id, i)">
+                                                <a *ngIf="wishlistItem.product[0].addedToWishlist"><i class="fas fa-heart"></i></a>
+                                                <a *ngIf="!wishlistItem.product[0].addedToWishlist"><i class="far fa-heart"></i></a>
+                                            </div>
+                                            <img style="cursor: pointer;" (click)="goToProductDetailsPage(product._id, product.slug)" [src]="wishlistItem.product[0].images[0].regular" class="product-image">
+                                            <div class="quick-view" (click)="goToProductDetailsPage(wishlistItem.product[0]._id, wishlistItem.product[0].slug)">
+                                                <p>View</p>
+                                            </div>
+                                        </div>
+                                        <div class="product-bottom">
+                                            <p class="product-name">{{wishlistItem.product[0].name}}</p>
+                                            <p class="product-price-cont mb-1" *ngIf="wishlistItem.product[0].final_base_price < wishlistItem.product[0].base_price">
+                                                <span class="current-price">₹{{wishlistItem.product[0].final_base_price}} </span>
+                                                <span class="old-price">₹{{wishlistItem.product[0].base_price}}</span> 
+                                                <span class="discount">{{wishlistItem.product[0].final_disount_percent}}% off</span>
+                                            </p>
+                            
+                                            <p class="product-price-cont mb-1" *ngIf="wishlistItem.product[0].final_base_price == wishlistItem.product[0].base_price">
+                                                <span class="current-price">₹{{wishlistItem.product[0].base_price}}</span>
+                                            </p>
+                                            <p class="rating-area-product">
+                                                <ng-container *ngIf="wishlistItem.total_comments">
+                                                    <i [ngClass]="wishlistItem.avg_rating >= 1 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+                                                    <i [ngClass]="wishlistItem.avg_rating >= 2 ? 'fas fadeIn' : 'far'" class="fa-star"></i>                                    
+                                                    <i [ngClass]="wishlistItem.avg_rating >= 3 ? 'fas fadeIn' : 'far'" class="fa-star"></i>                                    
+                                                    <i [ngClass]="wishlistItem.avg_rating >= 4 ? 'fas fadeIn' : 'far'" class="fa-star"></i>                                    
+                                                    <i [ngClass]="wishlistItem.avg_rating >= 5 ? 'fas fadeIn' : 'far'" class="fa-star"></i>                                        
+                                                    <span class="rating-count">({{wishlistItem.total_comments}})</span>
+                                                </ng-container> &nbsp;
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-0" *ngIf="wishlistItems && !wishlistItems.length">
+                                <p class="profile-option-desc">Your wishlist is empty.</p>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Address -->
+                    <ng-container *ngIf="addressDiv">
+                      <app-my-address></app-my-address>
+                    </ng-container>
+                    
+                    <!-- My Reviews -->
+                    <div class="profile-info-section fadeIn" *ngIf="myReviewsDiv">
+                        <div>
+                        <p class="profile-section-heading">My Reviews</p>
+                        </div>
+                        <div class="profile-information">
+                        <div>
+                            <p class="profile-option-desc">Coming Soon</p>
+                        </div>
+                        </div>
+                    </div>
+                    
+                    <!-- EDIT PROFILE SECTION -->
+                    <div class="profile-info-section fadeIn" *ngIf="editProfileDiv">
+                        <div class="d-flex align-items-center justify-content-between">
+                        <p class="profile-section-heading">Edit Profile</p>
+                
+                        <a class="nav-link btn-primary text-white rounded px-4" style="cursor: pointer;" (click)="updateProfile()">Save</a>
+                        </div>
+                        <div class="profile-information">
+                            <div class="profile-information-div" style="margin-top: 30px;">
+                                <p class="profile-option">Profile Picture:</p>
+                                <div class="profile-info">
+                                    <div class="dp-container">
+                                        <span (click)="fileInput.click()" title="Change profile picture">
+                                            <i class="fas fa-camera"></i>
+                                        </span>
+                                        <img [src]="auth.user.profile_picture" class="profile-user-img"/>
+                                        <input style="display: none" type="file" accept="image/gif, image/jpeg, image/png" (change)="changeProfilePicture($event)" #fileInput>
+                                        <!-- <button class="apply-button" style="    margin-top: 9px;"> <i class="fas fa-camera"></i> Change</button> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="profile-information-div" style="margin-top: 30px;">
+                                <p class="profile-option">First Name:</p>
+                                <input type="text" class="form-control" placeholder="" [(ngModel)]="user.fname" />
+                            </div>
+                            <div class="profile-information-div" style="margin-top: 30px;">
+                                <p class="profile-option">Last Name:</p>
+                                <input type="text" class="form-control" placeholder="" [(ngModel)]="user.lname" />
+                            </div>
+                            <div class="profile-information-div" style="margin-top: 30px;">
+                                <p class="profile-option">Gender</p>
+                                <select [(ngModel)]="user.gender" class="form-control">
+                                  <option value="Male">Male</option>
+                                  <option value="Female">Female</option>
+                                  <option value="Other">Other</option>
+                                </select>
+                              </div>
+                            <div class="profile-information-div" style="margin-top: 30px;">
+                                <p class="profile-option">Date of Birth:</p>
+                                <input type="date" max="{{today | date:'yyyy-MM-dd'}}" class="form-control" placeholder="Enter DOB" [(ngModel)]="dob"/>
+                              </div>
+                        </div>
+                    </div>
+                
+                
+                    <!-- CHANGE PASSWORD DIV -->
+                    <div class="profile-info-section fadeIn" *ngIf="changePasswordDiv">
+                        <div class="d-flex align-items-center justify-content-between" style="margin-bottom: 15px;">
+                        <p class="profile-section-heading">Change Password</p>
+                        <button class="nav-link btn-primary text-white rounded px-4" [disabled]="!(password.current && password.new && password.confirm && password.new == password.confirm && password.new.length > 5)" style="cursor: pointer;" (click)="updatePassword()" >Update</button>
+                        </div>
+                        <div class="profile-information">
+                        <div>
+                            <p class="profile-option" style="min-width: 160px;margin-bottom: 10px;">Old Password:</p>
+                            <input style="margin-bottom: 20px;" type="password" class="form-control" placeholder="Enter old password" [(ngModel)]="password.current" />
+                        </div>
+                        <div>
+                            <p class="profile-option" style="min-width: 160px;margin-bottom: 10px;">New Password:</p>
+                            
+                            <div class="position-relative w-100 mt-0">
+                            <input style="margin-bottom: 20px;" type="password" class="form-control" [ngClass]="{'input-error': password.new && !(password.new.length > 5)}" placeholder="Enter new password" [(ngModel)]="password.new" />
+                            <span *ngIf="password.new && !(password.new.length > 5)" class="input-error fadeIn" title="Minimum 6 characters required">
+                                <i class="las la-exclamation-circle"></i>
+                            </span>
+                            </div>
+                
+                        </div>
+                        <div>
+                            <p class="profile-option" style="min-width: 160px;margin-bottom: 10px;">Confirm Password:</p>
+                            <div class="position-relative w-100 mt-0">
+                            <input style="margin-bottom: 20px;" type="password" class="form-control" [ngClass]="{'input-error': password.confirm && !(password.new == password.confirm)}" placeholder="Enter confirm password" [(ngModel)]="password.confirm" />
+                            <span *ngIf="password.confirm && !(password.new == password.confirm)" class="input-error fadeIn" title="Password should match with the new password">
+                                <i class="las la-exclamation-circle"></i>
+                            </span>
+                            </div>
+                        </div>
+                        
+                        </div>
+                    </div>
+
+                    <!-- CUSTOMER CARE -->
+                    <div class="profile-info-section fadeIn" *ngIf="customerCareDiv">
+                      <div class="d-flex align-items-center justify-content-between mob-column" style="margin-bottom: 15px;">
+                          <p class="profile-section-heading">Get in touch with us</p>
+                          <button class="btn btn-primary text-white rounded px-4" [disabled]="!(contactUsEmail && emailRegex.test(contactUsEmail.toLowerCase()) && contactUsTitle && contactUsTitle.length > 4 && contactUsDescription && contactUsDescription.length > 19)" style="cursor: pointer;" (click)="sendMessage()">
+                              Send Message <i class="fas fa-paper-plane ml-2"></i>
+                          </button>
+                      </div>
+                      <div class="profile-information">
+                          <div class="row">
+                              <div class="col-md-12">
+                                <div class="profile-information-div" style="margin-top: 30px;">
+                                  <p class="profile-option">
+                                      Email:
+                                  </p>
+                                  <input type="email" placeholder="" class="form-control"  placeholder="" [(ngModel)]="contactUsEmail">
+                                  <span *ngIf="contactUsEmail && !(emailRegex.test(contactUsEmail.toLowerCase()))" class="input-error fadeIn" title="Invail email">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                  </span>
+                                </div>
+
+                                <div class="profile-information-div" style="margin-top: 30px;">
+                                    <p class="profile-option">
+                                        Title:
+                                    </p>
+                                    <input type="text" placeholder="" class="form-control"  placeholder="" [(ngModel)]="contactUsTitle">
+                                    <span *ngIf="contactUsTitle && !(contactUsTitle.length > 4)" class="input-error fadeIn" title="Minimum 5 characters required">
+                                      <i class="fas fa-exclamation-circle"></i>
+                                    </span>
+                                </div>
+
+                                <div class="profile-information-div" style="margin-top: 30px;">
+                                    <p class="profile-option">Description:</p>
+                                    <textarea style="margin-bottom: 20px;min-height: 90px;resize: none;" type="text" class="form-control" placeholder="" [(ngModel)]="contactUsDescription"></textarea>
+                                    <span *ngIf="contactUsDescription && !(contactUsDescription.length > 19)" class="input-error fadeIn" title="Minimum 20 characters required">
+                                      <i class="fas fa-exclamation-circle"></i>
+                                    </span>
+                                </div>
+                                  <div class="row">
+                                      <div class="col-md-12">
+                                          <div class="oc-title">
+                                              <p>Other ways to connect</p>
+                                          </div>
+                                          <div class="d-flex flex-wrap">
+                                              <a class="scu-wrapper" href="mailto:{{globals.settings.customerSupportEmail}}">
+                                                  <span>
+                                                      <i class="fas fa-envelope"></i>
+                                                  </span>
+                                                  <div>
+                                                      <p class="scu-title">Tap to email</p>
+                                                      <p class="scu-content">{{globals.settings.customerSupportEmail}}</p>
+                                                  </div>
+                                              </a>
+                                              <a class="scu-wrapper" href="tel:{{globals.settings.customerSupportContactNumber}}">
+                                                  <span>
+                                                      <i class="fas fa-phone-square-alt"></i>
+                                                  </span>
+                                                  <div>
+                                                      <p class="scu-title">Tap to call</p>
+                                                      <p class="scu-content">{{globals.settings.customerSupportContactNumber}}</p>
+                                                  </div>
+                                              </a>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+
+
+
+
+
+
+                      </div>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+        
+    
+    </div>
+</section>
+
+
+<!-- RATE AND REVIEW MODAL -->
+<div class="full-modal fadeIn review-modal" *ngIf="selectedOrderItemIndex != -1" style="padding-top: 3%;">
+    <div class="position-relative">
+        <div class="login-modal" style="width:550px;background:white;">
+            <app-review [(showRateModal)]="selectedOrderItemIndex" [(orderItem)]="orders[selectedOrderIndex].order_items[selectedOrderItemIndex]"></app-review>
+        </div>
+    </div>
+</div>
+<!-- RATE AND REVIEW MODAL ENDS -->
+
+
+<!-- Cancel Request POPUP -->
+
+<div class="alert-confirm fadeIn" *ngIf="alertConfirm && selectedOrderIndex != -1">
+  <div class="ac-wrapper">
+    <p class="ac-title" style="margin-bottom: 8px;">{{orders[selectedOrderIndex].order_status == 'Delivered' ? 'Return' : 'Cancellation'}} Request</p>
+    <p class="ac-subtitle" style="color: #333;">Please state the reason</p>
+
+    <div class="position-relative">
+      <textarea class="form-control cancel-area" placeholder="Enter your message" [(ngModel)]="cancelReasonText"></textarea>
+      <span *ngIf="cancelReasonText && !(cancelReasonText.length > 19)" class="input-error fadeIn cancel" title="Minimum 20 characters required">
+        <i class="fas fa-exclamation-circle"></i>
+      </span>
+    </div>
+
+    <div class="ac-btn-container">
+      <div class="saved-button butn" (click)="closeAlert()">Cancel</div>
+      <button class="apply-button butn ml" [disabled]="!(cancelReasonText && cancelReasonText.length > 19)" (click)="updateOrder()">Submit 
+        <i *ngIf="false" class="las la-spinner fa-spin loading-icn"></i>
+      </button>
+    </div>
+
+  </div>
+</div>

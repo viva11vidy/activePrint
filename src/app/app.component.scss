@@ -1,0 +1,31 @@
+.navbar-nav .nav-item {
+    cursor: pointer;
+}
+.menu-right-area {
+    position: absolute;
+    right: 0px;
+    min-width: 200px;
+    display: flex;
+    background-color: #810000;
+    height: 100%;
+    align-items: center;
+    justify-content: center;    
+}
+span.cart-count {
+    color: #810000;
+    background: #ffe1de;
+    border: 1px solid rgb(129 0 0 / 28%);
+    font-size: 10px;
+    font-weight: 600;
+    height: 15px;
+    width: 16px;
+    display: flex;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -2px;
+    right: 3px;
+    z-index: 1;
+}
+

@@ -1,0 +1,206 @@
+<section class="main-product-wrapper">
+
+    <div class="page-header container-fluid px-4" style="background-image: url('assets/img/visitng-card-banner.jpg'); background-color: #1f0006;">
+        <ng-container>
+            <h1 class="page-title fadeIn">Cart</h1>
+            <ul class="breadcrumb fadeIn">
+                <li><a href="" routerLink="/home"><i class="fas fa-home"></i></a></li>
+                <li class="delimiter">/</li>
+                <li>Cart</li>
+            </ul>
+        </ng-container>
+    </div>
+    
+    <section class="cart-wrapper pb-5">
+
+        <!-- <div class="page-header container-fluid px-4" style="background-image: url('assets/img/visitng-card-banner.jpg'); background-color: #1f0006;">
+            <h1 class="page-title">My Cart</h1>
+            <ul class="breadcrumb">
+                <li><a href="demo1.html"><i class="fas fa-home"></i></a></li>
+                <li class="delimiter">/</li>
+                <li>My Cart</li>
+            </ul>
+        </div> -->
+        <div class="container-fluid px-4">
+            <div class="row py-4" *ngIf="auth.cart.length">
+                <div class="col-md-8">
+                   <div class="cart-left-area">
+                       <div class="cl-header">
+                           <p>My Cart</p>
+                           <p class="item-count">Total Item{{auth.cart.length ? 's' : ''}}: {{auth.cart.length}}</p>
+                       </div>
+                       <div class="cl-body table-responsive">
+                        <table class="shop-table cart-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 130px;"><span>Product</span></th>
+                                    <th></th>
+                                    <th class="sm-width"><span>Price</span></th>
+                                    <th class="sm-width"><span>quantity</span></th>
+                                    <th class="sm-width">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let singleCartItem of auth.cart; let cartItemIndex = index">
+                                    <td class="product-thumbnail" style="width: 130px;">
+                                        <figure>
+                                            <div>
+                                                <a href="" [routerLink]="'/product/'+singleCartItem.product.info.slug+'/'+singleCartItem.product._id">
+                                                    <img style="cursor: pointer;" [src]="singleCartItem.product.info.images[0].thumb" width="100" height="100" alt="product">
+                                                </a>
+                                                <a *ngIf="singleCartItem.design" (click)="globals.viewingDesign=singleCartItem.design" class="view-design" style="display: inline-flex;"><i class="fas fa-image"></i> View Design</a>
+                                            </div>
+                                        </figure>
+                                    </td>
+                                    <td class="product-name sm-width">
+                                        <div class="product-name-section">
+                                            <a style="cursor: pointer;" href="" [routerLink]="'/product/'+singleCartItem.product.info.slug+'/'+singleCartItem.product._id">{{singleCartItem.product.info.name}}</a>
+                                        </div>
+                                        <ng-container *ngFor="let variation of singleCartItem.variation_selcted.variation">
+                                            <p>{{variation.group}} : {{variation.property}}</p>
+                                        </ng-container>
+                                    </td>
+                                    <td class="product-subtotal sm-width">
+                                        <span class="amount">{{singleCartItem.unitPrice | number : '1.2-2'}}</span>
+                                    </td>
+                                    <td class="product-quantity sm-width">
+                                        <div> 
+                                            <select [(ngModel)]="singleCartItem.variation_price_selcted.qty" name="size" (change)="updateCart($event, cartItemIndex)" class="form-control" style="padding: 11px 30px 11px 5px;">
+                                                <ng-container *ngFor="let priceEl of singleCartItem.variation_selcted.pricing">
+                                                    <option [ngValue]="priceEl.qty">{{priceEl.qty}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td class="product-price sm-width">
+                                        <span class="amount">{{singleCartItem.final_price | number : '1.2-2'}}</span>
+                                        <span class="old-amount" *ngIf="singleCartItem.discount">{{singleCartItem.final_price + singleCartItem.discount | number : '1.2-2'}}</span>
+                                    </td>
+                                    <td class="product-close">
+                                        <a class="product-remove pointer" title="Remove this product" (click)="removeItemFromCart(singleCartItem._id)">
+                                            <i class="fal fa-times"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                       </div>
+                   </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cart-right-area">
+                        <div class="cl-header">
+                            <p>Order Summary</p>
+                            <!-- <p class="item-count">Total Item 3</p> -->
+                        </div>
+                        <div class="cl-body">
+                            <table class="shop-table amount-table cart-table mt-0">
+                                <tbody>
+                                    <tr>
+                                        <td class="product-subtotal border-0">
+                                            <span class="amount">Item Total</span>
+                                        </td>
+                                        <td class="product-price border-0 text-right">
+                                            <span class="amount">₹ {{auth.cart[0].cart_master.total_cart_price - auth.cart[0].cart_master.total_cart_disc | number : '1.2-2'}}</span>
+                                        </td>
+                                    </tr>
+                                    
+                                   
+                                    <tr *ngIf="auth.cart[0].cart_master.total_delivery_charge > 0">
+                                      <td class="product-subtotal border-0 p-0">
+                                          <span class="amount">Delivery Charges</span>
+                                         
+                                      </td>
+                                      <td class="product-price border-0 text-right p-0">
+                                          <span *ngIf="(auth.cart[0].cart_master.total_cart_final_value - auth.cart[0].cart_master.total_delivery_charge) <= globals.settings.freeShippingAbove" class="amount">₹ {{auth.cart[0].cart_master.total_delivery_charge | number : '1.2-2'}}</span>
+                                          <span *ngIf="(auth.cart[0].cart_master.total_cart_final_value - auth.cart[0].cart_master.total_delivery_charge) > globals.settings.freeShippingAbove" class="amount">Free</span>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="product-subtotal border-0" colspan="2" style="text-align: left;color: #009688;font-size: 13px;">
+                                            <span class="amount">Free delivery above ₹{{globals.settings.freeShippingAbove}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="auth.cart[0].cart_master.total_custom_design_charge > 0">
+                                      <td class="product-subtotal border-0">
+                                          <span class="amount">Custom Design Charges</span>
+                                      </td>
+                                      <td class="product-price border-0 text-right">
+                                          <span class="amount">₹ {{auth.cart[0].cart_master.total_custom_design_charge | number : '1.2-2'}}</span>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="product-subtotal">
+                                            <span class="amount">Order Total</span>
+                                        </td>
+                                        <td class="product-price text-right">
+                                           
+
+                                            <span *ngIf="(auth.cart[0].cart_master.total_cart_final_value - auth.cart[0].cart_master.total_delivery_charge) > globals.settings.freeShippingAbove" class="amount">₹ {{auth.cart[0].cart_master.total_cart_final_value - auth.cart[0].cart_master.total_delivery_charge | number : '1.2-2'}}</span>
+
+                                            <span *ngIf="(auth.cart[0].cart_master.total_cart_final_value - auth.cart[0].cart_master.total_delivery_charge) <= globals.settings.freeShippingAbove" class="amount">₹ {{auth.cart[0].cart_master.total_cart_final_value | number : '1.2-2'}}</span>
+                                        </td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                            <hr *ngIf="auth.cart[0].cart_master.total_cart_disc > 0" style="margin: 5px 0px 20px;border-top: 1px solid #e1e1e1;">
+                            <p *ngIf="auth.cart[0].cart_master.total_cart_disc > 0" class="text-success text-center">Your Total Savings on this order ₹ {{auth.cart[0].cart_master.total_cart_disc | number : '1.2-2'}}</p>
+                        </div>
+                        <div class="cl-footer pt-4">
+                            <a class="btn btn-primary text-white" (click)="goToChekout()">Click to Continue <i class="fal fa-arrow-right ml-2"></i></a>
+                            <div class="cart-payment-img-wrapper">
+                                <img src="assets/img/cards-a.png" class="card-image"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row py-4" *ngIf="!auth.cart.length">
+                <div class="col-md-12">
+                   <div class="cart-left-area text-center">
+                       <img src="assets/img/empty-cart.png" class="empty-cart"/>
+                       <p class="cart-h">Your cart is empty</p>
+                       <p class="cart-sh">You have no items in your shopping cart</p>
+                       <p class="cart-sh">Let's go buy something</p>
+                       <a class="cart-btn" href="" routerLink="/home">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4" *ngIf="auth.cart.length">
+                <div class="col-md-3">
+                    <div class="cart-single-column">
+                        <i class="fal fa-shield-check"></i>
+                        <p class="ct-title">Secure Payment</p>
+                        <p class="sub-title">All payments are 100% Secured through our trusted payment gateway</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="cart-single-column">
+                        <i class="fal fa-lock"></i>
+                        <p class="ct-title">Trust Pay</p>
+                        <p class="sub-title">100% Payment Protection. Easy and Hassle Free Return Policy</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="cart-single-column">
+                        <i class="fal fa-user-headset"></i>
+                        <p class="ct-title">Help Center</p>
+                        <p class="sub-title">Got a question? Get in touch with us. We will help you out</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="cart-single-column mb-0">
+                        <i class="fal fa-smile-beam"></i>
+                        <p class="ct-title">100% Satisfaction</p>
+                        <p class="sub-title">Every time. Any reason. Or we'll make it right no matter what.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</section>

@@ -1,0 +1,67 @@
+<section class="main-designing-wrapper">
+  <div class="modal-header p-0">
+    <div class="browse-designs">
+      <p class="tab-heading-option">View Design</p>
+      <span class="close-modal" (click)="closeModal()">
+        <i class="far fa-times"></i>
+      </span>
+    </div>
+  </div>
+  <div class="designing-modal-body-wrapper">
+    <div class="designing-modal-body-container">
+      <ng-container *ngIf="globals.viewingDesign.template">
+        <div class="sd-left-area">
+          <div class="sd-content-section">
+           
+            <ng-container *ngFor="let field of globals.viewingDesign.template.fields">
+              <div class="sd-input-wrapper">
+                <ng-container *ngIf="field.type =='Text'">
+                  <p>{{field.name}}: <span>{{field.value}}</span></p>
+                </ng-container>
+                <ng-container *ngIf="field.type =='Image'">
+                  <p>{{field.name}}:</p>
+                  <div class="lg-wrapper">
+                    <img [src]="field.value.image_thumb">
+                  </div>
+                </ng-container>
+              </div>
+            </ng-container>
+           
+          </div>
+        </div>
+        <div class="sd-right-area">
+          <div class="sd-content-wrapper">
+            <p class="template-name" *ngIf="globals.viewingDesign.template">{{globals.viewingDesign.template.name}}</p>
+            <img [src]="globals.viewingDesign.template.images[imageIndex].regular" class="main-sd-image"/>
+
+            <div class="sd-image-container" *ngIf="globals.viewingDesign.template.type=='Double Sided'">
+              <ng-container *ngFor="let image of globals.viewingDesign.template.images; let i = index">
+                <img [src]="image.thumb" class="sd-image-fb" [ngClass]="{'active':imageIndex == i}" (click)="setImage(i)"/>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <!-- <img [src]="globals.viewingDesign.template.images[0].regular"> -->
+      </ng-container>
+      <ng-container *ngIf="globals.viewingDesign.custom">
+        <div class="sd-right-area" style="width: 100%;">
+          <div class="sd-content-wrapper">
+            <ng-container *ngIf="globals.viewingDesign.custom.contentType == 'image/jpeg' || globals.viewingDesign.custom.contentType == 'image/png' || globals.viewingDesign.custom.contentType == 'image/jpg';else other_content">
+              <img *ngIf="globals.viewingDesign.custom.imageSrc" [src]="globals.viewingDesign.custom.imageSrc">
+            </ng-container>
+            
+            <ng-template #other_content>
+              <p>You have uploaded following file for the <strong>customized design</strong></p>
+              <div class="file-container">
+                <p class="file-name">{{globals.viewingDesign.custom.originalname}}</p>
+              </div>
+              <a class="download-btn" href="{{globals.viewingDesign.custom.imageSrc}}" ><i class="fal fa-arrow-to-bottom"></i> Download</a>
+            </ng-template>
+            
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</section>
+

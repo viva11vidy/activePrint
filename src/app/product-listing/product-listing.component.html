@@ -1,0 +1,174 @@
+<ngx-loading-bar color="#d9b2b2" includeSpinner="false" height="3px"></ngx-loading-bar>
+
+<section class="main-product-wrapper">
+
+    <div class="page-header container-fluid px-4" style="background-image: url('assets/img/visitng-card-banner.jpg'); background-color: #1f0006;">
+        <!-- Skeleton Loading Starts -->
+        <ng-container *ngIf="skeletonLoading">
+            <h1 class="skeleton-loading light" style="height: 45px;width: 300px;"></h1>
+            <p class="skeleton-loading light mb-0" style="width: 136px; height: 25px;"></p>
+        </ng-container>
+        <!-- Skeleton Loading Ends -->
+        <ng-container *ngIf="category && !skeletonLoading">
+            <h1 class="page-title fadeIn">{{category.name}}</h1>
+            <ul class="breadcrumb fadeIn">
+                <li><a href="" routerLink="/home"><i class="fas fa-home"></i></a></li>
+                <li class="delimiter">/</li>
+                <li *ngIf="parentCategory"><a [routerLink]="'/category/'+parentCategory.slug+'/'+parentCategory._id">{{parentCategory.name}}</a></li>
+                <li *ngIf="parentCategory" class="delimiter">/</li>
+                <li>{{category.name}}</li>
+            </ul>
+        </ng-container>
+    </div>
+    <div class="container-fluid px-4">
+        <div class="row">
+            <div class="col-md-3 shop-sidebar sidebar-fixed" [ngClass]="{'reached-top':reachedToTop}" *ngIf="skeletonLoading || products.length">
+                <div class="sidebar-content position-relative">
+                    <div class="filter-actions mb-4">
+                        <a href="#" class="btn">Filter<i class="fal fa-filter ml-2"></i></a>
+                        <!-- <a href="#" class="filter-clean">Clear All</a> -->
+                    </div>
+                    <div class="accordions">
+                        <div class="accordion" id="accordionShape">
+                            <div class="single-accordion">
+                                <a data-toggle="collapse" data-target="#collapseOne" aria-expanded="true">
+                                    <span class="d-flex align-items-center">
+                                        Types
+                                    </span>
+                                    <span><i class="fal fa-chevron-down"></i></span>
+                                </a>
+                                <div id="collapseOne" class="collapse show" data-parent="#accordionShape">
+                                    <ng-container *ngFor="let product of products">
+                                        <p class="mb-0" (click)="goToProductDetailsPage(product._id, product.slug)">
+                                            <a class="single-product-typ">{{product.name}}</a>
+                                        </p>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="accordion" id="accordionSize">
+                            <div class="single-accordion" >
+                                <a data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false">
+                                    <span class="d-flex align-items-center">
+                                        Size
+                                    </span>
+                                    <span><i class="fas fa-chevron-down"></i></span>
+                                </a>
+                                <div id="collapseTwo" class="collapse" data-parent="#accordionSize">
+                                    <div class="card-body">
+                                        <label class="container">Standard
+                                            <input type="checkbox" checked="checked">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="main-content" [ngClass]="(skeletonLoading || products.length) ? 'col-md-9' : 'col-md-12'">
+                <nav class="toolbox sticky-toolbox sticky-content fix-top">
+                    <div class="toolbox-left">
+                        
+                    </div>
+                    <div class="toolbox-right">
+                        <div class="toolbox-item toolbox-sort select-box text-dark">
+                            <label>Sort By :</label>
+                            <select name="orderby" class="form-control ml-4" [(ngModel)]="publicSorting" (ngModelChange)='getProducts()'>
+                                <option value="">Default</option>
+                                <!-- <option value="rating">Average Rating</option> -->
+                                <option value="created:1">Latest</option>
+                                <option value="created:-1">Oldest</option>
+                                <!-- <option value="price-low">Price low to high</option> -->
+                                <!-- <option value="price-high">Price high to low</option> -->
+                            </select>
+                        </div>
+                    </div>
+                </nav>
+                <div class="row cols-2 cols-sm-3 product-container"> 
+
+                    <!-- Skeleton Loading Starts -->
+                    <ng-container *ngIf="skeletonLoading">
+                        <div class="col-md-3">
+                            <div class="product-one">
+                                <div class="product-top skeleton-loading dark" style="height: 260px;">
+                                </div>
+                                <div class="product-bottom"  style="height: 81px;">
+                                    <p class="product-name skeleton-loading dark" style="width: 136px; height: 25px;"></p>
+                                    <p class="product-name skeleton-loading dark" style="width: 176px;height: 20px;margin-bottom: 0px;margin-top: 10px;"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="product-one">
+                                <div class="product-top skeleton-loading dark" style="height: 260px;">
+                                </div>
+                                <div class="product-bottom"  style="height: 81px;">
+                                    <p class="product-name skeleton-loading dark" style="width: 136px; height: 25px;"></p>
+                                    <p class="product-name skeleton-loading dark" style="width: 176px;height: 20px;margin-bottom: 0px;margin-top: 10px;"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="product-one">
+                                <div class="product-top skeleton-loading dark" style="height: 260px;">
+                                </div>
+                                <div class="product-bottom"  style="height: 81px;">
+                                    <p class="product-name skeleton-loading dark" style="width: 136px; height: 25px;"></p>
+                                    <p class="product-name skeleton-loading dark" style="width: 176px;height: 20px;margin-bottom: 0px;margin-top: 10px;"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <!-- Skeleton Loading Ends -->
+
+                    <ng-container *ngIf="!skeletonLoading">
+                        <div class="col-md-3" *ngFor="let product of products; let i = index">
+                            <div class="product-one">
+                                <div class="product-top">
+                                    <div class="product-options-cw" (click)="addToWishlist(product._id, i)">
+                                        <a *ngIf="product.addedToWishlist"><i class="fas fa-heart"></i></a>
+                                        <a *ngIf="!product.addedToWishlist"><i class="far fa-heart"></i></a>
+                                    </div>
+                                    <img style="cursor: pointer;" (click)="goToProductDetailsPage(product._id, product.slug)" [src]="product.images[0].regular" class="product-image">
+                                    <div class="quick-view" (click)="goToProductDetailsPage(product._id, product.slug)">
+                                        <p>View</p>
+                                    </div>
+                                </div>
+                                <div class="product-bottom">
+                                    <p class="product-name">{{product.name}}</p>
+                                    <p class="product-price-cont mb-1" *ngIf="product.final_base_price < product.base_price">
+                                        <span class="current-price">₹{{product.final_base_price}} </span>
+                                        <span class="old-price">₹{{product.base_price}}</span> 
+                                        <span class="discount">{{product.final_disount_percent}}% off</span>
+                                    </p>
+                    
+                                    <p class="product-price-cont mb-1" *ngIf="product.final_base_price == product.base_price">
+                                        <span class="current-price">₹{{product.base_price}}</span>
+                                    </p>
+                                    <p class="rating-area-product">
+                                        <ng-container *ngIf="product.total_comments > 0">
+                                            <i [ngClass]="product.avg_rating >= 1 ? 'fas fadeIn' : 'far'" class="fa-star"></i>
+                                            <i [ngClass]="product.avg_rating >= 2 ? 'fas fadeIn' : 'far'" class="fa-star"></i>                                    
+                                            <i [ngClass]="product.avg_rating >= 3 ? 'fas fadeIn' : 'far'" class="fa-star"></i>                                    
+                                            <i [ngClass]="product.avg_rating >= 4 ? 'fas fadeIn' : 'far'" class="fa-star"></i>                                    
+                                            <i [ngClass]="product.avg_rating >= 5 ? 'fas fadeIn' : 'far'" class="fa-star"></i>                                        
+                                            <span class="rating-count">({{product.total_comments}})</span>
+                                        </ng-container> &nbsp;
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-0 pt-4 w-100" *ngIf="!products.length">
+                            <p class="profile-option-desc text-center">There is no product in {{category.name}}.</p>
+                        </div>
+                    </ng-container>
+                </div>
+                <!-- <nav class="toolbox toolbox-pagination">
+                    <p class="show-info">Showing <span>12 of 56</span> Products</p>
+                </nav> -->
+            </div>
+        </div>
+    </div>
+</section>
